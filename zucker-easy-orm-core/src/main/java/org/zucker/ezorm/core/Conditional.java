@@ -4,6 +4,8 @@ import org.hswebframework.utils.StringUtils;
 import org.zucker.ezorm.core.param.Term;
 import org.zucker.ezorm.core.param.TermType;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -136,6 +138,80 @@ public interface Conditional<T extends Conditional> extends LogicalOperation<T>,
         }
         return accept(column, TermType.like, StringUtils.concat("%", value, "%"));
     }
+
+    default T notLike(String column, Object value) {
+        return accept(column, TermType.nLike, value);
+    }
+
+    default T gt(String column, Object value) {
+        return accept(column, TermType.gt, value);
+    }
+
+    default T lt(String column, Object value) {
+        return accept(column, TermType.lt, value);
+    }
+
+    default T gte(String column, Object value) {
+        return accept(column, TermType.gte, value);
+    }
+
+    default T lte(String column, Object value) {
+        return accept(column, TermType.lte, value);
+    }
+
+    default T in(String column, Object value) {
+        return accept(column, TermType.in, value);
+    }
+
+    default T in(String column, Object... values) {
+        return accept(column, TermType.in, values);
+    }
+
+    default T in(String column, Collection values) {
+        return accept(column, TermType.in, values);
+    }
+
+    default T notIn(String column, Object value) {
+        return accept(column, TermType.nin, value);
+    }
+
+    default T notIn(String column, Object... value) {
+        return accept(column, TermType.nin, value);
+    }
+
+    default T notIn(String column, Collection values) {
+        return accept(column, TermType.nin, values);
+    }
+
+    default T isEmpty(String column) {
+        return accept(column, TermType.empty, 1);
+    }
+
+    default T notEmpty(String column) {
+        return accept(column, TermType.nempty, 1);
+    }
+
+    default T isNull(String column) {
+        return accept(column, TermType.isnull, 1);
+    }
+
+    default T notNull(String column) {
+        return accept(column, TermType.notnull, 1);
+    }
+
+    default T not(String column, Object value) {
+        return accept(column, TermType.not, 1);
+    }
+
+    default T between(String column, Object between, Object and) {
+        return accept(column, TermType.btw, Arrays.asList(between, and));
+    }
+
+    default T notBetween(String column, Object between, Object and) {
+        return accept(column, TermType.nbtw, Arrays.asList(between, and));
+    }
+
+    /*---------------lambda-----------*/
 
     default T accept(String column, String termType, Object value) {
         return getAccepter().accept(column, termType, value);
