@@ -7,12 +7,14 @@ import org.zucker.ezorm.core.param.TermType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
  * @auther: lind
  * @since: 1.0
  */
+@SuppressWarnings("all")
 public interface Conditional<T extends Conditional> extends LogicalOperation<T>, TermTypeConditionalSuppport {
 
     /**
@@ -213,8 +215,208 @@ public interface Conditional<T extends Conditional> extends LogicalOperation<T>,
 
     /*---------------lambda-----------*/
 
+    default <B> T and(StaticMethodReferenceColumn<B> column, Object value) {
+        return and(column, TermType.eq, value);
+    }
+
+    default <B> T and(MethodReferenceColumn<B> column) {
+        return and(column.getColumn(), TermType.eq, column.get());
+    }
+
+    default <B> T is(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column.getColumn(), TermType.eq, value);
+    }
+
+    default <B> T is(MethodReferenceColumn<B> column) {
+        return accept(column.getColumn(), TermType.eq, column.get());
+    }
+
+    default <B> T or(StaticMethodReferenceColumn<B> column, Object value) {
+        return or(column, TermType.eq, value);
+    }
+
+    default <B> T or(MethodReferenceColumn<B> column) {
+        return or(column.getColumn(), TermType.eq, column.get());
+    }
+
+    default <B> T like(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.like, value);
+    }
+
+    default <B> T like(MethodReferenceColumn<B> column) {
+        return accept(column.getColumn(), TermType.like, column.get());
+    }
+
+    default <B> T like$(StaticMethodReferenceColumn<B> column, Object value) {
+        if (value == null) {
+            return like(column, null);
+        }
+        return accept(column, TermType.like, StringUtils.concat(value, "%"));
+    }
+
+    default <B> T like$(MethodReferenceColumn<B> column) {
+        Object val = column.get();
+        if (val == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, StringUtils.concat("%", val));
+    }
+
+    default <B> T $like(StaticMethodReferenceColumn<B> column, Object value) {
+        if (value == null) {
+            return like(column, null);
+        }
+        return accept(column, TermType.like, StringUtils.concat("%", value));
+    }
+
+    default <B> T $like(MethodReferenceColumn<B> column) {
+        Object val = column.get();
+        if (val == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, StringUtils.concat("%", val));
+    }
+
+    default <B> T $like$(StaticMethodReferenceColumn<B> column, Object value) {
+        if (value == null) {
+            return like(column, null);
+        }
+        return accept(column, TermType.like, StringUtils.concat("%", value, "%"));
+    }
+
+    default <B> T $like$(MethodReferenceColumn<B> column) {
+        Object val = column.get();
+        if (val == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, StringUtils.concat("%", val, "%"));
+    }
+
+    default <B> T notLike(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.nLike, value);
+    }
+
+    default <B> T notLike(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.nLike);
+    }
+
+    default <B> T gt(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.eq, value);
+    }
+
+    default <B> T gt(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.gt);
+    }
+
+    default <B> T lt(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.lt, value);
+    }
+
+    default <B> T lt(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.lt);
+    }
+
+    default <B> T gte(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.gte, value);
+    }
+
+    default <B> T gte(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.gte);
+    }
+
+    default <B> T lte(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.lte, value);
+    }
+
+    default <B> T lte(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.lte);
+    }
+
+    default <B> T in(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.in, value);
+    }
+
+    default <B> T in(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.in);
+    }
+
+    default <B> T in(StaticMethodReferenceColumn<B> column, Object... values) {
+        return accept(column, TermType.in, values);
+    }
+
+    default <B> T in(StaticMethodReferenceColumn<B> column, Collection values) {
+        return accept(column, TermType.in, values);
+    }
+
+    default <B> T notIn(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.nin, value);
+    }
+
+    default <B> T notIn(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.nin);
+    }
+
+    default <B> T notIn(StaticMethodReferenceColumn<B> column, Object... values) {
+        return accept(column, TermType.nin, values);
+    }
+
+    default <B> T notIn(StaticMethodReferenceColumn<B> column, Collection values) {
+        return accept(column, TermType.nin, values);
+    }
+
+
+    default <B> T isEmpty(StaticMethodReferenceColumn<B> column) {
+        return accept(column, TermType.empty, 1);
+    }
+
+    default <B> T notEmpty(StaticMethodReferenceColumn<B> column) {
+        return accept(column, TermType.nempty, 1);
+    }
+
+    default <B> T isNull(StaticMethodReferenceColumn<B> column) {
+        return accept(column, TermType.isnull, 1);
+    }
+
+    default <B> T notNull(StaticMethodReferenceColumn<B> column) {
+        return accept(column, TermType.notnull, 1);
+    }
+
+    default <B> T not(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.not, value);
+    }
+
+    default <B> T not(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.not);
+    }
+
+    default <B> T between(StaticMethodReferenceColumn<B> column, Object between, Object and) {
+        return accept(column, TermType.btw, Arrays.asList(between, and));
+    }
+
+    default <B> T between(MethodReferenceColumn<B> column, Function<B, Object> between, Function<B, Object> and) {
+        B value = column.get();
+        return accept(column.getColumn(), TermType.btw, Arrays.asList(between.apply(value), and.apply(value)));
+    }
+
+    default <B> T notBetween(StaticMethodReferenceColumn<B> column, Object between, Object and) {
+        return accept(column, TermType.nbtw, Arrays.asList(between, and));
+    }
+
+    default <B> T notBetween(MethodReferenceColumn<B> column,Function<B,Object> between,Function<B,Object> and){
+        B value= column.get();
+        return accept(column.getColumn(),TermType.nbtw,Arrays.asList(between.apply(value),and.apply(value)));
+    }
+
     default T accept(String column, String termType, Object value) {
         return getAccepter().accept(column, termType, value);
+    }
+
+    default <B> T accept(StaticMethodReferenceColumn<B> column, String termType, Object value) {
+        return getAccepter().accept(column.getColumn(), termType, value);
+    }
+
+    default <B> T accept(MethodReferenceColumn<B> column, String termType) {
+        return getAccepter().accept(column.getColumn(), termType, column.get());
     }
 
     Accepter<T, Object> getAccepter();

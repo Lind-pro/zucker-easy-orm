@@ -1,5 +1,6 @@
 package org.zucker.ezorm.core;
 
+import org.hswebframework.utils.StringUtils;
 import org.zucker.ezorm.core.param.Term;
 import org.zucker.ezorm.core.param.TermType;
 
@@ -134,6 +135,98 @@ public interface NestConditional<T extends TermTypeConditionalSuppport> extends 
         return accept(column, TermType.empty, 1);
     }
 
+    default NestConditional<T> notEmpty(String column) {
+        return accept(column, TermType.nempty, 1);
+    }
+
+    default NestConditional<T> isNull(String column) {
+        return accept(column, TermType.isnull, 1);
+    }
+
+    default NestConditional<T> notNull(String column) {
+        return accept(column, TermType.notnull, 1);
+    }
+
+    default NestConditional<T> not(String column, Object value) {
+        return accept(column, TermType.not, value);
+    }
+
+    default NestConditional<T> between(String column, Object between, Object and) {
+        return accept(column, TermType.btw, Arrays.asList(between, and));
+    }
+
+    default NestConditional<T> notBetween(String column, Object between, Object and) {
+        return accept(column, TermType.nbtw, Arrays.asList(between, and));
+    }
+
+
+    /**
+     * --------lambda--------
+     */
+
+    default <B> NestConditional<T> is(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.eq, value);
+    }
+
+    default <B> NestConditional<T> is(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.eq);
+    }
+
+    default <B> NestConditional<T> like(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.like, value);
+    }
+
+    default <B> NestConditional<T> like(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.like);
+    }
+
+    default <B> NestConditional<T> like$(MethodReferenceColumn<B> column) {
+        Object value = column.get();
+        if (value == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, StringUtils.concat(value, "%"));
+    }
+
+    default <B> NestConditional<T> $like(MethodReferenceColumn<B> column) {
+        Object value = column.get();
+        if (value == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, StringUtils.concat("%", value));
+    }
+
+    default <B> NestConditional<T> $like$(MethodReferenceColumn<B> column) {
+        Object value = column.get();
+        if (value == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, StringUtils.concat("%", value, "%"));
+    }
+
+    default <B> NestConditional<T> like$(StaticMethodReferenceColumn<B> column, Object value) {
+        if (value == null) {
+            return like(column.getColumn(), null);
+        }
+        return accept(column.getColumn(), TermType.like, String.valueOf(value).concat("%"));
+    }
+
+    default <B> NestConditional<T> $like(StaticMethodReferenceColumn<B> column, Object value) {
+        if (value == null) {
+            return like(column, null);
+        }
+        return accept(column, TermType.like, "%".concat(String.valueOf(value)));
+    }
+
+    default <B> NestConditional<T> $like$(StaticMethodReferenceColumn<B> column, Object value) {
+        if (value == null) {
+            return like(column, null);
+        }
+        return accept(column, TermType.like, "%".concat(String.valueOf(value)).concat("%"));
+    }
+
+    //todo
+
     default <B> NestConditional<T> notEmpty(StaticMethodReferenceColumn<B> column) {
         return accept(column, TermType.empty, 1);
     }
@@ -159,12 +252,12 @@ public interface NestConditional<T extends TermTypeConditionalSuppport> extends 
         return accept(column.getColumn(), TermType.btw, Arrays.asList(between.apply(value), and.apply(value)));
     }
 
-    default <B> NestConditional<T> between(StaticMethodReferenceColumn<B> column,Object between,Object and){
-        return accept(column,TermType.btw,Arrays.asList(between,and));
+    default <B> NestConditional<T> between(StaticMethodReferenceColumn<B> column, Object between, Object and) {
+        return accept(column, TermType.btw, Arrays.asList(between, and));
     }
 
-    default <B> NestConditional<T> notBetween(StaticMethodReferenceColumn<B> column,Object between,Object and){
-        return accept(column,TermType.nbtw,Arrays.asList(between,and));
+    default <B> NestConditional<T> notBetween(StaticMethodReferenceColumn<B> column, Object between, Object and) {
+        return accept(column, TermType.nbtw, Arrays.asList(between, and));
     }
 
     default <B> NestConditional<T> accept(StaticMethodReferenceColumn<B> column, String termType, Object value) {
