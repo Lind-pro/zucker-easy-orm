@@ -225,6 +225,69 @@ public interface NestConditional<T extends TermTypeConditionalSuppport> extends 
         return accept(column, TermType.like, "%".concat(String.valueOf(value)).concat("%"));
     }
 
+    default <B> NestConditional<T> notLike(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.nLike, value);
+    }
+
+    default <B> NestConditional<T> notLike(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.nLike);
+    }
+
+    default <B> NestConditional<T> gt(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.gt, value);
+    }
+
+    default <B> NestConditional<T> gt(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.gt);
+    }
+
+    default <B> NestConditional<T> lt(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.lt, value);
+    }
+
+    default <B> NestConditional<T> lt(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.lt);
+    }
+
+    default <B> NestConditional<T> gte(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.gte, value);
+    }
+
+    default <B> NestConditional<T> gte(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.gte);
+    }
+
+    default <B> NestConditional<T> lte(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.lte, value);
+    }
+
+    default <B> NestConditional<T> lte(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.lte);
+    }
+
+    default <B> NestConditional<T> in(StaticMethodReferenceColumn<B> column, Object... values) {
+        return accept(column, TermType.in, values);
+    }
+
+    default <B> NestConditional<T> in(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.in);
+    }
+
+    default <B> NestConditional<T> in(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.in, value);
+    }
+
+    default <B> NestConditional<T> in(StaticMethodReferenceColumn<B> column, Conditional values) {
+        return accept(column, TermType.in, values);
+    }
+
+    default <B> NestConditional<T> notIn(StaticMethodReferenceColumn<B> column, Object value) {
+        return accept(column, TermType.nin, value);
+    }
+
+    default <B> NestConditional<T> notIn(MethodReferenceColumn<B> column) {
+        return accept(column, TermType.nin);
+    }
     //todo
 
     default <B> NestConditional<T> notEmpty(StaticMethodReferenceColumn<B> column) {
