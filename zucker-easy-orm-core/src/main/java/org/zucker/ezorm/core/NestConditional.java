@@ -288,7 +288,10 @@ public interface NestConditional<T extends TermTypeConditionalSuppport> extends 
     default <B> NestConditional<T> notIn(MethodReferenceColumn<B> column) {
         return accept(column, TermType.nin);
     }
-    //todo
+
+    default <B> NestConditional<T> isEmpty(StaticMethodReferenceColumn<B> column){
+        return accept(column,TermType.empty,1);
+    }
 
     default <B> NestConditional<T> notEmpty(StaticMethodReferenceColumn<B> column) {
         return accept(column, TermType.empty, 1);
