@@ -8,6 +8,8 @@ public class GlobalConfig {
     private static ObjectPropertyOperator propertyOperator;
 
     static {
+        setPropertyOperator(ApacheCommonPropertyOperator.INSTANCE);
+        setObjectConverter(ApacheCommonPropertyOperator.INSTANCE);
     }
 
     private static ObjectConverter objectConverter;

@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface PropertyWrapper extends Serializable {
 
-     <T> T getValue();
+    <T> T getValue();
 
     int toInt();
 
@@ -23,7 +23,7 @@ public interface PropertyWrapper extends Serializable {
 
     Date toDate(String format);
 
-    Map<String,Object> toMap();
+    Map<String, Object> toMap();
 
     List<Map> toList();
 
