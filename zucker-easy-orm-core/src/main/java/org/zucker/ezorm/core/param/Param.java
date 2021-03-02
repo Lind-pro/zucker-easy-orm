@@ -47,7 +47,7 @@ public class Param implements Cloneable {
         return (T) this;
     }
 
-    public <T extends Param> T add(String column, String termType, Object value) {
+    public <T extends Param> T and(String column, String termType, Object value) {
         Term term = new Term();
         term.setTermType(termType);
         term.setColumn(column);
