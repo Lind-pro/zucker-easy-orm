@@ -38,7 +38,7 @@ public interface TermType {
     /**
      * >=
      */
-    String gte = "get";
+    String gte = "gte";
 
     /**
      * <=

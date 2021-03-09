@@ -301,7 +301,7 @@ public interface Conditional<T extends Conditional> extends LogicalOperation<T>,
     }
 
     default <B> T gt(StaticMethodReferenceColumn<B> column, Object value) {
-        return accept(column, TermType.eq, value);
+        return accept(column, TermType.gt, value);
     }
 
     default <B> T gt(MethodReferenceColumn<B> column) {
