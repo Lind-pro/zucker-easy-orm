@@ -3,11 +3,18 @@ package org.zucker.ezorm.rdb.metadata.dialect;
 import lombok.extern.slf4j.Slf4j;
 import org.zucker.ezorm.rdb.metadata.CustomDataType;
 import org.zucker.ezorm.rdb.metadata.DataType;
+import org.zucker.ezorm.rdb.metadata.JdbcDataType;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.JDBCType;
 import java.sql.SQLType;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -40,8 +47,63 @@ public abstract class DefaultDialect implements Dialect {
         registerDataType("nvarchar", DataType.builder(DataType.jdbc(JDBCType.NVARCHAR, String.class),
                 column -> "nvarchar(" + column.getLength() + ")"));
 
-        registerDataType("decimal",DataType.builder(DataType.jdbc(JDBCType.DECIMAL, BigDecimal.class),
-                column->"decimal("+column.getPrecision(32)+","+column.getScale()+")"));
+        registerDataType("decimal", DataType.builder(DataType.jdbc(JDBCType.DECIMAL, BigDecimal.class),
+                column -> "decimal(" + column.getPrecision(32) + "," + column.getScale() + ")"));
+
+        registerDataType("numeric", DataType.builder(DataType.jdbc(JDBCType.NUMERIC, BigDecimal.class),
+                column -> "numeric(" + column.getPrecision(32) + "," + column.getScale() + ")"));
+
+        registerDataType("number", DataType.builder(DataType.jdbc(JDBCType.NUMERIC, BigDecimal.class),
+                column -> "number(" + column.getPrecision(32) + "," + column.getScale() + ")"));
+
+        registerDataType("bigint", JdbcDataType.of(JDBCType.BIGINT, Long.class));
+        registerDataType("tinyint", JdbcDataType.of(JDBCType.TINYINT, Byte.class));
+        registerDataType("timestamp", JdbcDataType.of(JDBCType.TIMESTAMP, Timestamp.class));
+        registerDataType("date", JdbcDataType.of(JDBCType.DATE, LocalDate.class));
+        registerDataType("time", JdbcDataType.of(JDBCType.TIME, LocalTime.class));
+        registerDataType("long", JdbcDataType.of(JDBCType.BIGINT, Long.class));
+        registerDataType("double", JdbcDataType.of(JDBCType.DOUBLE, Double.class));
+        registerDataType("binary", JdbcDataType.of(JDBCType.BINARY, byte[].class));
+
+        classJDBCTypeMapping.put(String.class, JDBCType.VARCHAR);
+
+        classJDBCTypeMapping.put(Byte.class, JDBCType.TINYINT);
+        classJDBCTypeMapping.put(byte.class, JDBCType.TINYINT);
+
+        classJDBCTypeMapping.put(Short.class, JDBCType.SMALLINT);
+        classJDBCTypeMapping.put(short.class, JDBCType.SMALLINT);
+
+        classJDBCTypeMapping.put(Integer.class, JDBCType.INTEGER);
+        classJDBCTypeMapping.put(int.class, JDBCType.INTEGER);
+
+        classJDBCTypeMapping.put(Character.class, JDBCType.CHAR);
+        classJDBCTypeMapping.put(char.class, JDBCType.CHAR);
+
+        classJDBCTypeMapping.put(Long.class, JDBCType.BIGINT);
+        classJDBCTypeMapping.put(long.class, JDBCType.BIGINT);
+
+        classJDBCTypeMapping.put(Double.class, JDBCType.DOUBLE);
+        classJDBCTypeMapping.put(double.class, JDBCType.DOUBLE);
+
+        classJDBCTypeMapping.put(Float.class, JDBCType.FLOAT);
+        classJDBCTypeMapping.put(float.class, JDBCType.FLOAT);
+
+        classJDBCTypeMapping.put(Boolean.class, JDBCType.BOOLEAN);
+        classJDBCTypeMapping.put(boolean.class, JDBCType.BOOLEAN);
+
+        classJDBCTypeMapping.put(byte[].class, JDBCType.BLOB);
+
+        classJDBCTypeMapping.put(BigDecimal.class, JDBCType.DECIMAL);
+        classJDBCTypeMapping.put(BigInteger.class, JDBCType.INTEGER);
+
+        classJDBCTypeMapping.put(Date.class, JDBCType.TIMESTAMP);
+        classJDBCTypeMapping.put(java.sql.Date.class, JDBCType.TIMESTAMP);
+        classJDBCTypeMapping.put(java.sql.Timestamp.class, JDBCType.TIMESTAMP);
+        classJDBCTypeMapping.put(LocalTime.class, JDBCType.TIME);
+        classJDBCTypeMapping.put(LocalDateTime.class, JDBCType.TIMESTAMP);
+        classJDBCTypeMapping.put(LocalDate.class, JDBCType.DATE);
+
+        classJDBCTypeMapping.put(Object.class, JDBCType.OTHER);
     }
 
     protected void addDataTypeBuilder(JDBCType jdbcType, DataTypeBuilder mapper) {
