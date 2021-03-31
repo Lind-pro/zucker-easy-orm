@@ -166,7 +166,6 @@ public abstract class AbstractSchemaMetadata implements SchemaMetadata {
     @Override
     public <T extends ObjectMetadata> Optional<T> getObject(ObjectType type, String name, boolean autoLoad) {
         Objects.requireNonNull(name, "name");
-
         return Optional.of(metaRepository.computeIfAbsent(type.getId(), t -> new ConcurrentHashMap<>()))
                 .map(repo -> repo.computeIfAbsent(name, __ -> autoLoad ? loadMetadata(type, name) : null))
                 .map(CastUtil::cast);
