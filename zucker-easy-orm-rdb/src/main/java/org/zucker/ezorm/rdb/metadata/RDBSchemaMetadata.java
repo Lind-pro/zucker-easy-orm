@@ -132,7 +132,7 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
         return getView(name, true);
     }
 
-    public void addTable(RDBTableMetadata metadata){
+    public void addTable(RDBTableMetadata metadata) {
 
     }
 
@@ -151,4 +151,7 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
                 .map(TableOrViewMetadata.class::cast);
     }
 
+    public Optional<TableOrViewMetadata> getTableOrView(String name) {
+        return getTableOrView(name, true);
+    }
 }
