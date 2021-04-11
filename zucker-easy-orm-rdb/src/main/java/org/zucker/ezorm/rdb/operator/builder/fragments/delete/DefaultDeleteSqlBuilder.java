@@ -6,11 +6,7 @@ import org.zucker.ezorm.core.param.Term;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.key.ForeignKeyMetadata;
-import org.zucker.ezorm.rdb.operator.builder.fragments.EmptySqlFragments;
-import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
-import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
-import org.zucker.ezorm.rdb.operator.builder.fragments.TermFragmentBuilder;
-import org.zucker.ezorm.rdb.operator.builder.fragments.term.AbstractTermFragmentBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.*;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.ForeignKeyTermFragmentBuilder;
 
 import java.util.Collections;

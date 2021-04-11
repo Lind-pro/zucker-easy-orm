@@ -1,16 +1,19 @@
 package org.zucker.ezorm.rdb.metadata;
 
-import org.zucker.ezorm.core.PropertyWrapper;
-import org.zucker.ezorm.core.meta.AbstractColumnMetadata;
 import org.zucker.ezorm.core.meta.AbstractSchemaMetadata;
+import org.zucker.ezorm.core.meta.ObjectMetadata;
 import org.zucker.ezorm.core.meta.ObjectType;
+import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 import org.zucker.ezorm.rdb.operator.builder.DefaultQuerySqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.DefaultForeignKeyTermFragmentBuilder;
+import org.zucker.ezorm.rdb.utils.FeatureUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @auther: lind
@@ -84,14 +87,6 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
         return getObject(RDBObjectType.table, name);
     }
 
-    public Optional<TableOrViewMetadata> findTableOrView(String name) {
-        Optional<TableOrViewMetadata> current = getTableOrView(name, false);
-        if (current.isPresent()) {
-            return current;
-        }
-        return getDatabase().getTableOrView(name);
-    }
-
     public Mono<RDBTableMetadata> getTableReactive(String name) {
         return getTableReactive(name, true);
     }
@@ -99,7 +94,7 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
     public Mono<RDBTableMetadata> getTableReactive(String name, boolean autoLoad) {
         if (name.contains(".")) {
             return findTableOrViewReactive(name)
-                    .map(RDBSchemaMetadata.class::cast);
+                    .map(RDBTableMetadata.class::cast);
         }
         return getObjectReactive(RDBObjectType.table, name, autoLoad);
     }
@@ -133,7 +128,16 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
     }
 
     public void addTable(RDBTableMetadata metadata) {
+        metadata.setSchema(this);
+        addObject(metadata);
+    }
 
+    public Optional<TableOrViewMetadata> findTableOrView(String name) {
+        Optional<TableOrViewMetadata> current = getTableOrView(name, false);
+        if (current.isPresent()) {
+            return current;
+        }
+        return getDatabase().getTableOrView(name);
     }
 
     public Mono<TableOrViewMetadata> findTableOrViewReactive(String name) {
@@ -153,5 +157,90 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
 
     public Optional<TableOrViewMetadata> getTableOrView(String name) {
         return getTableOrView(name, true);
+    }
+
+    @Override
+    protected <T extends ObjectMetadata> List<T> loadMetadata(ObjectType type) {
+        return super.<T>loadMetadata(type)
+                .stream()
+                .map(this::metadataParsed)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    protected <T extends ObjectMetadata> Flux<T> loadMetadataReactive(ObjectType type) {
+        return super.<T>loadMetadataReactive(type)
+                .map(this::metadataParsed);
+    }
+
+    protected <T extends ObjectMetadata> T metadataParsed(T metadata) {
+        if (metadata instanceof AbstractTableOrViewMetadata) {
+            ((AbstractTableOrViewMetadata) metadata).setSchema(this);
+        }
+        return metadata;
+    }
+
+    @Override
+    protected <T extends ObjectMetadata> T loadMetadata(ObjectType type, String name) {
+        T metadata = super.loadMetadata(type, name);
+        return super.loadMetadata(type, name);
+    }
+
+    @Override
+    protected <T extends ObjectMetadata> Mono<T> loadMetadataReactive(ObjectType type, String name) {
+        return super.<T>loadMetadataReactive(type, name).map(this::metadataParsed);
+    }
+
+    public RDBTableMetadata newTable(String name) {
+        RDBTableMetadata tableMetadata = new RDBTableMetadata(name);
+        tableMetadata.setSchema(this);
+        return tableMetadata;
+    }
+
+    public void loadAllTable() {
+        loadMetadata(RDBObjectType.table)
+                .forEach(table -> addTable((RDBTableMetadata) table));
+    }
+
+    public Mono<Void> loadAllTableReactive() {
+        return loadMetadataReactive(RDBObjectType.table)
+                .doOnNext(table -> addTable((RDBTableMetadata) table))
+                .then();
+    }
+
+    @Override
+    public List<ObjectType> getAllObjectType() {
+        return allObjectType;
+    }
+
+
+    public Dialect getDialect() {
+        return Optional.ofNullable(getDatabase())
+                .map(RDBDatabaseMetadata::getDialect)
+                .orElseGet(() -> this
+                        .<Dialect>getFeatures(RDBFeatureType.dialect)
+                        .stream()
+                        .findFirst()
+                        .orElse(null));
+    }
+
+    public Optional<TableOrViewMetadata> removeTableOrView(String name) {
+        return this.<TableOrViewMetadata>removeObject(RDBObjectType.table, name)
+                .map(Optional::of)
+                .orElseGet(() -> removeObject(RDBObjectType.view, name));
+    }
+
+    @Override
+    public RDBSchemaMetadata clone() {
+        return (RDBSchemaMetadata) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "schema " +
+                getName() +
+                " (" + getClass().getSimpleName() + ")" +
+                "\n" +
+                FeatureUtils.featureToString(getFeatureList());
     }
 }

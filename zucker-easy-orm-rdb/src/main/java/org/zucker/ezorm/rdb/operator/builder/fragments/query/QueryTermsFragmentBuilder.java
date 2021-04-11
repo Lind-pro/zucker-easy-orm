@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import org.zucker.ezorm.core.param.Term;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
+import org.zucker.ezorm.rdb.operator.builder.fragments.AbstractTermFragmentBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.EmptySqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
-import org.zucker.ezorm.rdb.operator.builder.fragments.term.AbstractTermFragmentBuilder;
 import org.zucker.ezorm.rdb.operator.dml.query.QueryOperatorParameter;
 
 import java.util.Collections;

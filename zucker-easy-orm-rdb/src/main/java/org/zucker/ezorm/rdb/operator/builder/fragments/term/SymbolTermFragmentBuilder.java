@@ -13,7 +13,7 @@ public class SymbolTermFragmentBuilder extends AbstractTermFragmentBuilder {
 
     private String symbol;
 
-    public SymbolTermFragmentBuilder(String termType,String name, String symbol) {
+    public SymbolTermFragmentBuilder(String termType, String name, String symbol) {
         super(termType, name);
         this.symbol = symbol;
     }

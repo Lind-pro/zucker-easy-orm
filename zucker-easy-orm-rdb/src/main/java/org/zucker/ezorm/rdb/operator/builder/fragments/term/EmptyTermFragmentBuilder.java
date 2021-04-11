@@ -2,6 +2,7 @@ package org.zucker.ezorm.rdb.operator.builder.fragments.term;
 
 import org.zucker.ezorm.core.param.Term;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
+import org.zucker.ezorm.rdb.operator.builder.fragments.AbstractTermFragmentBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 
