@@ -5,6 +5,7 @@ import org.zucker.ezorm.core.meta.ObjectMetadata;
 import org.zucker.ezorm.core.meta.ObjectType;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 import org.zucker.ezorm.rdb.operator.builder.DefaultQuerySqlBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CommonCreateTableSqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.DefaultForeignKeyTermFragmentBuilder;
 import org.zucker.ezorm.rdb.utils.FeatureUtils;
 import reactor.core.publisher.Flux;
@@ -59,7 +60,7 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
 
             /* DDL */
             // TODO
-//            addFeature(RDBFeatures.count);
+            addFeature(CommonCreateTableSqlBuilder.INSTANCE);
 
             /* 编解码工厂*/
             addFeature(DefaultValueCodecFactory.COMMONS);
