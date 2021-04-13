@@ -5,7 +5,10 @@ import org.zucker.ezorm.core.meta.ObjectMetadata;
 import org.zucker.ezorm.core.meta.ObjectType;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 import org.zucker.ezorm.rdb.operator.builder.DefaultQuerySqlBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CommonAlterTableSqlBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CommonCreateIndexSqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CommonCreateTableSqlBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CommonDropIndexSqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.DefaultForeignKeyTermFragmentBuilder;
 import org.zucker.ezorm.rdb.utils.FeatureUtils;
 import reactor.core.publisher.Flux;
@@ -59,8 +62,10 @@ public class RDBSchemaMetadata extends AbstractSchemaMetadata {
             addFeature(RDBFeatures.avg);
 
             /* DDL */
-            // TODO
             addFeature(CommonCreateTableSqlBuilder.INSTANCE);
+            addFeature(CommonAlterTableSqlBuilder.INSTANCE);
+            addFeature(CommonCreateIndexSqlBuilder.INSTANCE);
+            addFeature(CommonDropIndexSqlBuilder.INSTANCE);
 
             /* 编解码工厂*/
             addFeature(DefaultValueCodecFactory.COMMONS);

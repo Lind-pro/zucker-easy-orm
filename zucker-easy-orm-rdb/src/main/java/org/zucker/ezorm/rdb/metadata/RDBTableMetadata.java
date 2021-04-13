@@ -2,6 +2,7 @@ package org.zucker.ezorm.rdb.metadata;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.zucker.ezorm.rdb.operator.builder.fragments.insert.BatchInsertSqlBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,6 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
 
     public RDBTableMetadata(){
         super();
-        addFeature(Batch);
+        addFeature(BatchInsertSqlBuilder.of(this));
     }
 }
