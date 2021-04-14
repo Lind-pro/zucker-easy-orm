@@ -3,6 +3,7 @@ package org.zucker.ezorm.rdb.metadata;
 import lombok.Getter;
 import lombok.Setter;
 import org.zucker.ezorm.rdb.operator.builder.fragments.insert.BatchInsertSqlBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.update.DefaultUpdateSqlBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,9 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
                 .findFirst();
     }
 
-    public RDBTableMetadata(){
+    public RDBTableMetadata() {
         super();
         addFeature(BatchInsertSqlBuilder.of(this));
+        addFeature(DefaultUpdateSqlBuilder.of(this));
     }
 }

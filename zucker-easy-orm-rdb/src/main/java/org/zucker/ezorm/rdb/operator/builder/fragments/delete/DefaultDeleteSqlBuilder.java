@@ -19,7 +19,7 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 @AllArgsConstructor(staticName = "of")
-public class DefaultDeleteSqlBuilder extends AbstractTermFragmentBuilder<DeleteOperatorParameter> implements DeleteSqlBuilder {
+public class DefaultDeleteSqlBuilder extends AbstractTermsFragmentBuilder<DeleteOperatorParameter> implements DeleteSqlBuilder {
 
     private RDBTableMetadata table;
 

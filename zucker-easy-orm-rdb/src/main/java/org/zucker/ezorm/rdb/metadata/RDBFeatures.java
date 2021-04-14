@@ -1,7 +1,6 @@
 package org.zucker.ezorm.rdb.metadata;
 
 import org.zucker.ezorm.core.FeatureId;
-import org.zucker.ezorm.core.meta.Feature;
 import org.zucker.ezorm.rdb.operator.builder.fragments.function.SimpleFunctionFragmentBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.query.QuerySqlFragmentBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.*;
@@ -38,8 +37,8 @@ public interface RDBFeatures {
     InTermFragmentBuilder in = new InTermFragmentBuilder("in", "在...之中", false);
     InTermFragmentBuilder notIn = new InTermFragmentBuilder("nin", "不在...之中", true);
 
-    EmptyTermFragmentBuilder isEmpty = new EmptyTermFragmentBuilder("empty", "为空字符", false);
-    EmptyTermFragmentBuilder notEmpty = new EmptyTermFragmentBuilder("notempty", "不为空字符", true);
+    EmptyTermsFragmentBuilder isEmpty = new EmptyTermsFragmentBuilder("empty", "为空字符", false);
+    EmptyTermsFragmentBuilder notEmpty = new EmptyTermsFragmentBuilder("notempty", "不为空字符", true);
 
     NullTermFragmentBuilder isNull = new NullTermFragmentBuilder("isnull", "为null", false);
     NullTermFragmentBuilder notNull = new NullTermFragmentBuilder("notnull", "不为null", true);

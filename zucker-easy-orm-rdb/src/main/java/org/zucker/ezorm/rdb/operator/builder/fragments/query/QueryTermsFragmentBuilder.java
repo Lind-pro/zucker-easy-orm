@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.zucker.ezorm.core.param.Term;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
-import org.zucker.ezorm.rdb.operator.builder.fragments.AbstractTermFragmentBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.AbstractTermsFragmentBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.EmptySqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 import org.zucker.ezorm.rdb.operator.dml.query.QueryOperatorParameter;
@@ -17,7 +17,7 @@ import java.util.Set;
  * @since: 1.0
  */
 @AllArgsConstructor(staticName = "of")
-public class QueryTermsFragmentBuilder extends AbstractTermFragmentBuilder<QueryOperatorParameter> implements QuerySqlFragmentBuilder{
+public class QueryTermsFragmentBuilder extends AbstractTermsFragmentBuilder<QueryOperatorParameter> implements QuerySqlFragmentBuilder{
 
     private final TableOrViewMetadata metadata;
 

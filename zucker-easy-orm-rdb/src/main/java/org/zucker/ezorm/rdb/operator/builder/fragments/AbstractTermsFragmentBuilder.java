@@ -14,7 +14,7 @@ import java.util.List;
  * @since: 1.0
  */
 @SuppressWarnings("all")
-public abstract class AbstractTermFragmentBuilder<T> {
+public abstract class AbstractTermsFragmentBuilder<T> {
 
     @Getter
     @Setter
