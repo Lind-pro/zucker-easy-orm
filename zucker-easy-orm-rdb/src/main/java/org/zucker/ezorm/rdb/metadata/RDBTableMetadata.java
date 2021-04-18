@@ -2,6 +2,7 @@ package org.zucker.ezorm.rdb.metadata;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.zucker.ezorm.rdb.operator.builder.fragments.delete.DefaultDeleteSqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.insert.BatchInsertSqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.update.DefaultUpdateSqlBuilder;
 
@@ -36,5 +37,7 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
         super();
         addFeature(BatchInsertSqlBuilder.of(this));
         addFeature(DefaultUpdateSqlBuilder.of(this));
+        addFeature(DefaultDeleteSqlBuilder.of(this));
+        addFeature(Defau);
     }
 }
