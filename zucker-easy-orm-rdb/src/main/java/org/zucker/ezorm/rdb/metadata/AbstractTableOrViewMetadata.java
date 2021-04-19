@@ -86,9 +86,11 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
     }
 
     public void addColumn(RDBColumnMetadata column) {
+
         column.setOwner(this);
         allColumns.put(column.getName(), column);
         allColumns.put(column.getAlias(), column);
+
     }
 
     @Override

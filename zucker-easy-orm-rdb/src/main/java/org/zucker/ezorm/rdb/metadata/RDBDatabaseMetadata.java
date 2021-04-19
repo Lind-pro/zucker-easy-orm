@@ -33,4 +33,19 @@ public class RDBDatabaseMetadata extends AbstractDatabaseMetadata<RDBSchemaMetad
     public Mono<TableOrViewMetadata> getTableOrViewReactive(String name) {
         return this.getObjectReactive(name, RDBSchemaMetadata::getTableOrViewReactive);
     }
+
+    public Mono<RDBTableMetadata> getTableReactive(String name){
+        return this.getObjectReactive(name,RDBSchemaMetadata::getTableReactive);
+    }
+
+    @Override
+    public Optional<RDBSchemaMetadata> getSchema(String name) {
+        return super.getSchema(getDialect().clearQuote(name));
+    }
+
+    @Override
+    public void addSchema(RDBSchemaMetadata schema) {
+        schema.setDatabase(this);
+        super.addSchema(schema);
+    }
 }

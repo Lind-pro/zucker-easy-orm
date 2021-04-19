@@ -146,7 +146,7 @@ public class RDBColumnMetadata extends AbstractColumnMetadata implements ColumnM
 
     @Override
     @SneakyThrows
-    public ObjectMetadata clone() {
+    public RDBColumnMetadata clone() {
         RDBColumnMetadata columnMetadata = (RDBColumnMetadata) super.clone();
         columnMetadata.setProperties(new HashMap<>(getProperties()));
         columnMetadata.setFeatures(new HashMap<>(getFeatures()));
