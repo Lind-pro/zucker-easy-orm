@@ -70,7 +70,7 @@ public abstract class JdbcSqlExecutor {
 
 
     @SneakyThrows
-    private void doExecute(Connection connection, SqlRequest request) {
+    protected void doExecute(Connection connection, SqlRequest request) {
         PreparedStatement statement = null;
         try {
             if (!request.isEmpty()) {

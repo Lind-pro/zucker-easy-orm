@@ -1,8 +1,8 @@
 package org.zucker.ezorm.rdb;
 
+import io.r2dbc.spi.Connection;
 import reactor.core.publisher.Mono;
 
-import java.sql.Connection;
 
 /**
  * @auther: lind
