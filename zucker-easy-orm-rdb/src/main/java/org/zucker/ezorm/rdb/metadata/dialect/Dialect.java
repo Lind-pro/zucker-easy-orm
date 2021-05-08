@@ -5,12 +5,15 @@ import org.zucker.ezorm.core.meta.Feature;
 import org.zucker.ezorm.rdb.metadata.DataType;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBFeatureType;
+import org.zucker.ezorm.rdb.supports.h2.H2Dialect;
+import org.zucker.ezorm.rdb.supports.mysql.MysqlDialect;
 
 import java.sql.SQLType;
 import java.util.Optional;
 
 /**
  * 数据库方言
+ * @see DefaultDialect
  *
  * @auther: lind
  * @since: 1.0
@@ -58,6 +61,7 @@ public interface Dialect extends Feature {
         }
         return StringUtils.concat(tableName, ".", getQuoteStart(), isColumnToUpperCase() ? columnName.toUpperCase() : columnName, getQuoteEnd());
     }
-    // todo
-//    Dialect MYSQL = new
+    Dialect MYSQL = new MysqlDialect();
+    Dialect H2 = new H2Dialect();
+
 }
