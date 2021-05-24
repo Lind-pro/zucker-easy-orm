@@ -8,14 +8,16 @@ import org.zucker.ezorm.rdb.events.ContextKeyValue;
 import org.zucker.ezorm.rdb.events.ContextKeys;
 import org.zucker.ezorm.rdb.executor.wrapper.ResultWrapper;
 import org.zucker.ezorm.rdb.mapping.EntityColumnMapping;
+import org.zucker.ezorm.rdb.mapping.LazyEntityColumnMapping;
+import org.zucker.ezorm.rdb.mapping.MappingFeatureType;
+import org.zucker.ezorm.rdb.mapping.events.MappingContextKeys;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.DatabaseOperator;
+import org.zucker.ezorm.rdb.operator.dml.upsert.SaveResultOperator;
+import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static org.zucker.ezorm.rdb.mapping.events.MappingContextKeys.*;
@@ -90,6 +92,15 @@ public abstract class DefaultRepository<E> {
         return idColumn;
     }
 
-    protected void initMapping(Class<E> entityType){
+    protected void initMapping(Class<E> entityType) {
+        this.mapping = LazyEntityColumnMapping.of(() -> getTable()
+                .<EntityColumnMapping>findFeature(MappingFeatureType.columnPropertyMapping.createFeatureId(entityType))
+                .orElseThrow(() -> new UnsupportedOperationException("unsupported columnPropertyMapping feature")));
+        defaultContextKeyValue.add(columnMapping(mapping));
+    }
+
+    protected SaveResultOperator doSave(Collection<E> data){
+        RDBTableMetadata table = getTable();
+        UpsertOperator upsert = operator.dml().upsert(table.getFullName());
     }
 }

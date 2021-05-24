@@ -45,4 +45,7 @@ public interface MappingContextKeys {
         return ContextKeyValue.of(dml, operator);
     }
 
+    static <T> ContextKeyValue<EntityColumnMapping> columnMapping(EntityColumnMapping val) {
+        return ContextKeyValue.of(columnMapping, val);
+    }
 }
