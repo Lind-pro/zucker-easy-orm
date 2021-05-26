@@ -6,9 +6,9 @@ import org.zucker.ezorm.core.MethodReferenceColumn;
 import org.zucker.ezorm.core.StaticMethodReferenceColumn;
 import org.zucker.ezorm.core.param.QueryParam;
 import org.zucker.ezorm.core.param.Term;
-import org.zucker.ezorm.rdb.operator.dml.query.JoinOperator;
-import org.zucker.ezorm.rdb.operator.dml.query.Joins;
-import org.zucker.ezorm.rdb.operator.dml.query.SelectColumn;
+import org.zucker.ezorm.rdb.executor.SqlRequest;
+import org.zucker.ezorm.rdb.executor.wrapper.ResultWrapper;
+import org.zucker.ezorm.rdb.operator.dml.query.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -102,4 +102,43 @@ public abstract class QueryOperator implements LogicalOperation<QueryOperator> {
         joinOperatorConsumer.accept(operator);
         return join(operator.get());
     }
+
+    public final QueryOperator innerJoin(String target, Consumer<JoinOperator> joinOperatorConsumer) {
+        JoinOperator operator = Joins.inner(target);
+        joinOperatorConsumer.accept(operator);
+        return join(operator.get());
+    }
+
+    public final QueryOperator rightJoin(String target, Consumer<JoinOperator> joinOperatorConsumer) {
+        JoinOperator operator = Joins.right(target);
+        joinOperatorConsumer.accept(operator);
+        return join(operator.get());
+    }
+
+    public final QueryOperator fullJoin(String target, Consumer<JoinOperator> joinOperatorConsumer) {
+        JoinOperator operator = Joins.right(target);
+        joinOperatorConsumer.accept(operator);
+        return join(operator.get());
+    }
+
+    public final QueryOperator orderBy(SortOrderSupplier... operators) {
+        for (Supplier<SortOrder> operator : operators) {
+            orderBy(operator.get());
+        }
+        return this;
+    }
+
+    public abstract QueryOperator orderBy(SortOrder... operators);
+
+    public abstract QueryOperator groupBy(Operator<?>... operators);
+
+    public abstract QueryOperator having(Operator<?>... operators);
+
+    public abstract QueryOperator paging(int pageIndex, int pageSize);
+
+    public abstract QueryOperator forUpdate();
+
+    public abstract SqlRequest getSql();
+
+    public abstract <E, R> QueryResultOperator<E, R> fetch(ResultWrapper<E, R> wrapper);
 }

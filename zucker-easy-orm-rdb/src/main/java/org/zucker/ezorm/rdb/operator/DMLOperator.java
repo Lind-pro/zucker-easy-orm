@@ -1,6 +1,7 @@
 package org.zucker.ezorm.rdb.operator;
 
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
+import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 
 /**
  * @auther: lind
@@ -9,4 +10,5 @@ import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 public interface DMLOperator {
 
     QueryOperator query(TableOrViewMetadata tableOrView);
+
 }
