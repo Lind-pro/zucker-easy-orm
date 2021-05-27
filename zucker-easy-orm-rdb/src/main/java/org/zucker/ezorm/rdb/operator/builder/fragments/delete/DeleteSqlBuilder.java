@@ -2,6 +2,7 @@ package org.zucker.ezorm.rdb.operator.builder.fragments.delete;
 
 import org.zucker.ezorm.core.FeatureId;
 import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
+import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperatorParameter;
 
 /**
  * @auther: lind
