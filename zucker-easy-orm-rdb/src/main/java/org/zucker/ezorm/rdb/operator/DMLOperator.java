@@ -4,6 +4,8 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperator;
+import org.zucker.ezorm.rdb.operator.dml.insert.InsertOperator;
+import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator;
 
 /**
  * @auther: lind
@@ -15,5 +17,7 @@ public interface DMLOperator {
 
     DeleteOperator delete(RDBTableMetadata table);
 
-//    UpdateO
+    UpdateOperator update(RDBTableMetadata table);
+
+    InsertOperator insert(RDBTableMetadata table);
 }
