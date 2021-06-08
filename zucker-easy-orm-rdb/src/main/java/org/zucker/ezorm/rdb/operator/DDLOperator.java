@@ -5,4 +5,5 @@ package org.zucker.ezorm.rdb.operator;
  * @since: 1.0
  */
 public interface DDLOperator {
+
 }
