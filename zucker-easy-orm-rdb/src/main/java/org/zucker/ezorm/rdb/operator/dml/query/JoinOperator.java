@@ -32,7 +32,7 @@ public class JoinOperator implements Supplier<Join> {
         return on(Wheres.sql(sql));
     }
 
-    public final JoinOperator on(Consumer<Conditional<?> consumer) {
+    public final JoinOperator on(Consumer<Conditional<?>> consumer) {
         Query<?, QueryParam> query = Query.of();
         consumer.accept(query);
         join.getTerms().addAll(query.getParam().getTerms());

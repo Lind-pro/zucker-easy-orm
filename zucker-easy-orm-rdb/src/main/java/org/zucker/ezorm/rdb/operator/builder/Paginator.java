@@ -25,5 +25,5 @@ public interface Paginator extends Feature {
         return RDBFeatureType.paginator;
     }
 
-    SqlFragments doPaging(SqlFragments fragments, int pageIndex, int PageSize);
+    SqlFragments doPaging(SqlFragments fragments, int pageIndex, int pageSize);
 }
