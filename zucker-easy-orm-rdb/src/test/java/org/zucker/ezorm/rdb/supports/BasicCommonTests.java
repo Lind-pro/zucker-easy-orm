@@ -10,6 +10,7 @@ import org.zucker.ezorm.rdb.mapping.defaults.record.Record;
 import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
+import org.zucker.ezorm.rdb.operator.DefaultDatabaseOperator;
 
 import java.util.UUID;
 
@@ -58,5 +59,10 @@ public abstract class BasicCommonTests {
         return metadata;
     }
 
+    public void init(){
+        RDBDatabaseMetadata metadata = getDatabase();
+        DefaultDatabaseOperator operator = DefaultDatabaseOperator.of(metadata);
 
+        new Jpa
+    }
 }

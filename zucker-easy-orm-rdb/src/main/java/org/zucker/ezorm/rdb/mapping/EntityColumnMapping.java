@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface EntityColumnMapping extends Feature {
 
     @Override
-    default FeatureType getType() {
+    default MappingFeatureType getType() {
         return MappingFeatureType.columnPropertyMapping;
     }
 
