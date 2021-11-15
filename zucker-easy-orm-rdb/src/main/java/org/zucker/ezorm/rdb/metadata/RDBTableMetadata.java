@@ -27,6 +27,8 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
 
     private List<RDBIndexMetadata> indexes = new ArrayList<>();
 
+    private List<ConstraintMetadata> constraints = new ArrayList<>();
+
     public RDBTableMetadata(String name) {
         this();
         setName(name);
@@ -50,6 +52,18 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
         Objects.requireNonNull(index.getName(), "index name can not be null");
         index.setTableName(getName());
         indexes.add(index);
+    }
+
+    public Optional<ConstraintMetadata> getConstraint(String name) {
+        return constraints.stream()
+                .filter(metadata -> metadata.getName().equalsIgnoreCase(name))
+                .findFirst();
+    }
+
+    public void addConstraint(ConstraintMetadata metadata) {
+        Objects.requireNonNull(metadata.getName(), "Constraint name can not be null");
+        metadata.setTableName(this.getName());
+        constraints.add(metadata);
     }
 
     @Override
