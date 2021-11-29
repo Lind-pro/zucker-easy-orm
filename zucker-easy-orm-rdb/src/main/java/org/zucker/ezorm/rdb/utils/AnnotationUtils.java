@@ -5,6 +5,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -13,6 +14,33 @@ import java.util.function.Consumer;
  * @since: 1.0
  */
 public class AnnotationUtils {
+
+    public static Optional<Field> getFieldByDescriptor(Class<?> type, PropertyDescriptor descriptor) {
+        String name = descriptor.getName();
+        // 获取属性
+        while (true) {
+            try {
+                try {
+                    return Optional.of(type.getDeclaredField(name));
+                } catch (NoSuchFieldException e1) {
+                    char[] arr = name.toCharArray();
+                    if (Character.isUpperCase(arr[0])) {
+                        arr[0] = Character.toLowerCase(arr[0]);
+                        name = new String(arr);
+                        continue;
+                    }
+                    throw e1;
+                }
+            } catch (NoSuchFieldException e) {
+                type = type.getSuperclass();
+                if (type == null || type == Object.class) {
+                    break;
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     public static Set<Annotation> getAnnotations(Class entityClass, PropertyDescriptor descriptor) {
         Set<Annotation> annotations = new HashSet<>();
         Set<Class<? extends Annotation>> types = new HashSet<>();
@@ -86,15 +114,15 @@ public class AnnotationUtils {
         return ann;
     }
 
-    public static <T extends Annotation> T getAnnotation(Class<?> clazz,Class<T> annotation){
+    public static <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> annotation) {
         T ann = clazz.getAnnotation(annotation);
 
-        while (ann==null){
+        while (ann == null) {
             clazz = clazz.getSuperclass();
-            if(clazz==null||clazz==Object.class){
+            if (clazz == null || clazz == Object.class) {
                 break;
             }
-            ann =clazz.getAnnotation(annotation);
+            ann = clazz.getAnnotation(annotation);
         }
         return ann;
     }

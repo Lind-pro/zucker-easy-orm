@@ -2,6 +2,7 @@ package org.zucker.ezorm.rdb.mapping;
 
 import lombok.Getter;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
+import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 
 import java.util.LinkedHashMap;
@@ -36,7 +37,7 @@ public class DefaultEntityColumnMapping implements EntityColumnMapping {
         propertyColumnMapping.put(property, column);
     }
 
-    public DefaultEntityColumnMapping(TableOrViewMetadata table, Class<?> entityType, String name) {
+    public DefaultEntityColumnMapping(TableOrViewMetadata table, Class<?> entityType) {
         this.id = getType().createFeatureId(entityType);
         this.name = getType().getName() + ":" + entityType.getSimpleName();
         this.table = table;
