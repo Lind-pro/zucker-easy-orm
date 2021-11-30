@@ -3,6 +3,7 @@ package org.zucker.ezorm.rdb.operator.dml.query;
 import org.zucker.ezorm.core.FeatureId;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
+import reactor.core.publisher.Mono;
 
 /**
  * @auther: lind
@@ -25,4 +26,6 @@ public interface QuerySqlBuilder extends SqlBuilder<QueryOperatorParameter> {
     }
 
     SqlRequest build(QueryOperatorParameter parameter);
+
+    Mono<SqlRequest> buildAsync(QueryOperatorParameter parameter);
 }

@@ -1,19 +1,37 @@
 package org.zucker.ezorm.rdb.mapping.jpa;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hswebframework.utils.ClassUtils;
+import org.zucker.ezorm.core.DefaultValueGenerator;
+import org.zucker.ezorm.core.RuntimeDefaultValue;
+import org.zucker.ezorm.rdb.codec.EnumValueCodec;
 import org.zucker.ezorm.rdb.mapping.DefaultEntityColumnMapping;
+import org.zucker.ezorm.rdb.mapping.EntityPropertyDescriptor;
+import org.zucker.ezorm.rdb.mapping.annotation.Comment;
+import org.zucker.ezorm.rdb.mapping.annotation.DefaultValue;
+import org.zucker.ezorm.rdb.mapping.annotation.Upsert;
 import org.zucker.ezorm.rdb.mapping.parser.DataTypeResolver;
+import org.zucker.ezorm.rdb.mapping.parser.ValueCodecResolver;
 import org.zucker.ezorm.rdb.metadata.*;
+import org.zucker.ezorm.rdb.metadata.key.AssociationType;
+import org.zucker.ezorm.rdb.metadata.key.ForeignKeyBuilder;
+import org.zucker.ezorm.rdb.operator.builder.fragments.term.EnumFragmentBuilder;
 import org.zucker.ezorm.rdb.utils.AnnotationUtils;
+import org.zucker.ezorm.rdb.utils.PropertiesUtils;
 
 import javax.persistence.*;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.zucker.ezorm.rdb.utils.AnnotationUtils.getAnnotations;
 
@@ -30,8 +48,12 @@ public class JpaEntityTableMetadataParserProcessor {
 
     private final RDBTableMetadata tableMetadata;
 
-    @Getter
+    @Setter
     private DataTypeResolver dataTypeResolver;
+
+    @Setter
+    private ValueCodecResolver valueCodecResolver;
+
 
     private JpaEntityTableMetadataParserProcessor(RDBTableMetadata tableMetadata, Class<?> entityType) {
         this.tableMetadata = tableMetadata;
@@ -87,9 +109,14 @@ public class JpaEntityTableMetadataParserProcessor {
 
 
             getAnnotation(annotations, Column.class)
-                    .ifPresent(column -> {
-                    });
+                    .ifPresent(column -> handleColumnAnnotation(descriptor, annotations, ColumnInfo.of(column)));
+            getAnnotation(annotations, JoinColumns.class)
+                    .ifPresent(column -> afterRun.add(() -> handleJoinColumnAnnotation(descriptor, annotations, column.value())));
+
+            getAnnotation(annotations, JoinColumn.class)
+                    .ifPresent(column -> afterRun.add(() -> handleJoinColumnAnnotation(descriptor, annotations, column)));
         }
+        afterRun.forEach(Runnable::run);
     }
 
     private <T extends Annotation> Optional<T> getAnnotation(Set<Annotation> annotations, Class<T> type) {
@@ -97,6 +124,58 @@ public class JpaEntityTableMetadataParserProcessor {
                 .filter(type::isInstance)
                 .map(type::cast)
                 .findFirst();
+    }
+
+    @SneakyThrows
+    private void handleJoinColumnAnnotation(PropertyDescriptor descriptor, Set<Annotation> annotations, JoinColumn... column) {
+
+        Field field = PropertiesUtils.getPropertyField(entityType, descriptor.getName())
+                .orElseThrow(() -> new NoSuchFieldException("no such field" + descriptor.getName() + " in " + entityType));
+
+        Table join;
+        ForeignKeyBuilder builder = ForeignKeyBuilder.builder()
+                .source(tableMetadata.getFullName())
+                .name(descriptor.getName())
+                .alias(descriptor.getName())
+                .build();
+
+        Type fieldGenericType = field.getGenericType();
+        if (fieldGenericType instanceof ParameterizedType) {
+            Type[] types = ((ParameterizedType) fieldGenericType).getActualTypeArguments();
+            join = Stream.of(types)
+                    .map(Class.class::cast)
+                    .map(t -> AnnotationUtils.getAnnotation(t, Table.class))
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+        } else {
+            builder.setAutoJoin(true);
+            join = AnnotationUtils.getAnnotation(field.getType(), Table.class);
+        }
+        String joinTableName;
+        if (join != null) {
+            joinTableName = join.schema().isEmpty() ? join.name() : join.schema().concat(".").concat(join.name());
+        } else {
+            log.warn("can not resolve join table for :{}", field);
+            return;
+        }
+        builder.setTarget(joinTableName);
+
+        getAnnotation(annotations, OneToOne.class)
+                .ifPresent(oneToOne -> builder.setAssociationType(AssociationType.oneToOne));
+        getAnnotation(annotations, OneToMany.class)
+                .ifPresent(oneToMany -> builder.setAssociationType(AssociationType.oneToMay));
+
+        getAnnotation(annotations, ManyToMany.class)
+                .ifPresent(manyToMany -> builder.setAssociationType(AssociationType.manyToMay));
+        getAnnotation(annotations, ManyToOne.class)
+                .ifPresent(manyToOne -> builder.setAssociationType(AssociationType.manyToOne));
+
+        for (JoinColumn joinColumn : column) {
+            String columnName = joinColumn.name();
+            builder.addColumn(columnName, joinColumn.referencedColumnName());
+        }
+        tableMetadata.addForeignKey(builder);
     }
 
     @Getter
@@ -140,7 +219,7 @@ public class JpaEntityTableMetadataParserProcessor {
         }
     }
 
-    private static String camelCase2UnderScorceCase(String str) {
+    private static String camelCase2UnderScoreCase(String str) {
         StringBuilder sb = new StringBuilder();
         char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; i++) {
@@ -175,17 +254,17 @@ public class JpaEntityTableMetadataParserProcessor {
             columnName = column.name;
         } else {
             // 驼峰命名
-            columnName = camelCase2UnderScorceCase(field.getName());
+            columnName = camelCase2UnderScoreCase(field.getName());
         }
         Class<?> javaType = descriptor.getPropertyType();
 
-        if(javaType==Object.class){
-            javaType=descriptor.getReadMethod().getReturnType();
+        if (javaType == Object.class) {
+            javaType = descriptor.getReadMethod().getReturnType();
         }
-        if(javaType==Object.class){
-            javaType=descriptor.getWriteMethod().getReturnType();
+        if (javaType == Object.class) {
+            javaType = descriptor.getWriteMethod().getReturnType();
         }
-        mapping.addMapping(columnName,field.getName());
+        mapping.addMapping(columnName, field.getName());
         RDBColumnMetadata metadata = tableMetadata.getColumn(columnName).orElseGet(tableMetadata::newColumn);
         metadata.setName(columnName);
         metadata.setAlias(field.getName());
@@ -196,12 +275,67 @@ public class JpaEntityTableMetadataParserProcessor {
         metadata.setNotNull(!column.nullable);
         metadata.setUpdatable(column.updatable);
         metadata.setInsertable(column.insertable);
-        if(!column.columnDefinition.isEmpty()){
+        if (!column.columnDefinition.isEmpty()) {
             metadata.setColumnDefinition(column.columnDefinition);
         }
-        // TODO
-//        getAnnotation(annotations,GeneratedValue.class)
-//                .map(GeneratedValue::generator)
+        getAnnotation(annotations, GeneratedValue.class)
+                .map(GeneratedValue::generator)
+                .map(gen -> lazyDefaultValueGenerator.of(() ->
+                        tableMetadata.findFeatureNow(DefaultValueGenerator.<RDBColumnMetadata>createId(gen))))
+                .map(gen -> gen.generate(metadata))
+                .ifPresent(metadata::setDefaultValue);
+
+        getAnnotation(annotations, DefaultValue.class)
+                .map(gen -> {
+                    if (gen.value().isEmpty()) {
+                        return lazyDefaultValueGenerator.of(() ->
+                                        tableMetadata.findFeatureNow(DefaultValueGenerator.createId(gen.generator())))
+                                .generate(metadata);
+                    }
+                    return (RuntimeDefaultValue) gen::value;
+                })
+                .ifPresent(metadata::setDefaultValue);
+
+        getAnnotation(annotations, Comment.class)
+                .map(Comment::value)
+                .ifPresent(metadata::setComment);
+
+        getAnnotation(annotations, Upsert.class)
+                .map(Upsert::insertOnly)
+                .ifPresent(insertOnly -> metadata.setSaveable(!insertOnly));
+
+        getAnnotation(annotations, Id.class).ifPresent(id -> metadata.setPrimaryKey(true));
+
+        EntityPropertyDescriptor propertyDescriptor = SimpleEntityPropertyDescriptor.of(entityType, descriptor.getName(), javaType, metadata, descriptor);
+
+        metadata.addFeature(propertyDescriptor);
+
+        Optional.ofNullable(dataTypeResolver)
+                .map(resolver -> resolver.resolve(propertyDescriptor))
+                .ifPresent(metadata::setType);
+
+        if (metadata.getType() == null) {
+            tableMetadata.getDialect()
+                    .convertSqlType(metadata.getJavaType())
+                    .ifPresent(jdbcType -> metadata.setJdbcType(jdbcType, metadata.getJavaType()));
+        }
+
+        Optional.ofNullable(valueCodecResolver)
+                .map(resolver -> resolver.resolve(propertyDescriptor)
+                        .orElseGet(() -> metadata
+                                .findFeature(ValueCodecFactory.ID)
+                                .flatMap(factory -> factory.createValueCodec(metadata))
+                                .orElse(null)))
+                .ifPresent(metadata::setValueCodec);
+
+        if (metadata.getValueCodec() instanceof EnumValueCodec) {
+            EnumValueCodec codec = (EnumValueCodec) metadata.getValueCodec();
+            if (codec.isToMask()) {
+                metadata.addFeature(EnumFragmentBuilder.eq);
+                metadata.addFeature(EnumFragmentBuilder.not);
+            }
+        }
+        tableMetadata.addColumn(metadata);
     }
 }
 

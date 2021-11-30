@@ -11,6 +11,7 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 import org.zucker.ezorm.rdb.operator.dml.query.QueryOperatorParameter;
 import org.zucker.ezorm.rdb.operator.dml.query.QuerySqlBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -86,10 +87,23 @@ public class DefaultQuerySqlBuilder implements QuerySqlBuilder {
     @Override
     public SqlRequest build(QueryOperatorParameter parameter) {
         String from = parameter.getFrom();
-        if(from ==null || from.isEmpty()){
-            throw  new UnsupportedOperationException("from table or view not set");
+        if (from == null || from.isEmpty()) {
+            throw new UnsupportedOperationException("from table or view not set");
         }
-        TableOrViewMetadata metadata = schema.find
-        return null;
+        TableOrViewMetadata metadata = schema
+                .findTableOrView(from)
+                .orElseThrow(() -> new UnsupportedOperationException("table or view [" + from + "] doesn't exist"));
+
+        return build(metadata, parameter);
+    }
+
+    public Mono<SqlRequest> buildAsync(QueryOperatorParameter parameter) {
+        String from = parameter.getFrom();
+        if (from == null || from.isEmpty()) {
+            throw new UnsupportedOperationException("from table or view not set");
+        }
+        return schema.findTableOrViewReactive(from)
+                .switchIfEmpty(Mono.error(() -> new UnsupportedOperationException("table or view [" + from + "] doesn't exist")))
+                .map(metadata -> this.build(metadata, parameter));
     }
 }

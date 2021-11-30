@@ -1,5 +1,6 @@
 package org.zucker.ezorm.rdb.codec;
 
+import lombok.Getter;
 import org.zucker.ezorm.core.ValueCodec;
 
 import java.lang.reflect.Array;
@@ -18,8 +19,10 @@ public class EnumValueCodec implements ValueCodec<Object, Object> {
 
     private Class type;
 
+    @Getter
     private boolean isArray;
 
+    @Getter
     private boolean toMask;
 
     public EnumValueCodec(Class type) {
@@ -43,6 +46,10 @@ public class EnumValueCodec implements ValueCodec<Object, Object> {
     @Override
     @SuppressWarnings("all")
     public Object encode(Object value) {
+        if (value instanceof String && toMask) {
+            String name = String.valueOf(value);
+            value = Enum.valueOf(type, name);
+        }
         if (value instanceof Enum) {
             if (!toMask) {
                 return ((Enum<?>) value).name();
