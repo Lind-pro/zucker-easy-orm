@@ -1,5 +1,6 @@
 package org.zucker.ezorm.rdb.codec;
 
+import lombok.AllArgsConstructor;
 import org.zucker.ezorm.core.ValueCodec;
 
 import java.sql.JDBCType;
@@ -9,6 +10,7 @@ import java.sql.SQLType;
  * @auther: lind
  * @since: 1.0
  */
+@AllArgsConstructor
 public class BooleanValueCodec implements ValueCodec<Object, Boolean> {
 
     private SQLType sqlType;
@@ -32,12 +34,12 @@ public class BooleanValueCodec implements ValueCodec<Object, Boolean> {
 
     @Override
     public Boolean decode(Object data) {
-        if(null==data){
+        if (null == data) {
             return false;
         }
-        if(data instanceof Boolean){
+        if (data instanceof Boolean) {
             return (Boolean) data;
         }
-        return "1".equals(String.valueOf(data))||"true".equals(String.valueOf(data));
+        return "1".equals(String.valueOf(data)) || "true".equals(String.valueOf(data));
     }
 }

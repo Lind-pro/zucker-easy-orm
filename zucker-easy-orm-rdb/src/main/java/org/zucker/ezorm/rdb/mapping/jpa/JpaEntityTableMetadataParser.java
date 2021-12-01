@@ -3,9 +3,7 @@ package org.zucker.ezorm.rdb.mapping.jpa;
 import lombok.Setter;
 import org.hswebframework.utils.ClassUtils;
 import org.zucker.ezorm.rdb.mapping.annotation.Comment;
-import org.zucker.ezorm.rdb.mapping.parser.DataTypeResolver;
-import org.zucker.ezorm.rdb.mapping.parser.DefaultDataTypeResolver;
-import org.zucker.ezorm.rdb.mapping.parser.EntityTableMetadataParser;
+import org.zucker.ezorm.rdb.mapping.parser.*;
 import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
@@ -26,7 +24,10 @@ public class JpaEntityTableMetadataParser implements EntityTableMetadataParser {
     @Setter
     private RDBDatabaseMetadata databaseMetadata;
 
+    @Setter
     private DataTypeResolver dataTypeResolver = DefaultDataTypeResolver.INSTANCE;
+
+    private ValueCodecResolver valueCodecResolver = DefaultValueCodecResolver.COMMONS;
 
     @Override
     public Optional<RDBTableMetadata> parseTableMetadata(Class<?> entityType) {
@@ -43,7 +44,10 @@ public class JpaEntityTableMetadataParser implements EntityTableMetadataParser {
                 .map(Comment::value)
                 .ifPresent(tableMetadata::setComment);
 
-        new JpaEntityTableMetadataParser(tableMetadata,entityType);
-        return Optional.empty();
+        JpaEntityTableMetadataParserProcessor parserProcessor = new JpaEntityTableMetadataParserProcessor(tableMetadata, entityType);
+        parserProcessor.setDataTypeResolver(dataTypeResolver);
+        parserProcessor.setValueCodecResolver(valueCodecResolver);
+        parserProcessor.process();
+        return Optional.of(tableMetadata);
     }
 }

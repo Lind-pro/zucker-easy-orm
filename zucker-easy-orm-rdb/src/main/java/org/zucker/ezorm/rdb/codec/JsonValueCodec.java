@@ -60,7 +60,7 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
                 .constructMapType(targetType, keyType, valueType));
     }
 
-    public static JsonValueCodec onField(Field field) {
+    public static JsonValueCodec ofField(Field field) {
         Class type = field.getType();
         Class targetType = type;
         Type genericType = field.getGenericType();

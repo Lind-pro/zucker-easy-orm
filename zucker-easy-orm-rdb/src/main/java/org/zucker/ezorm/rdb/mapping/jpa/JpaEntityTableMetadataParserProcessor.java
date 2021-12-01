@@ -55,7 +55,7 @@ public class JpaEntityTableMetadataParserProcessor {
     private ValueCodecResolver valueCodecResolver;
 
 
-    private JpaEntityTableMetadataParserProcessor(RDBTableMetadata tableMetadata, Class<?> entityType) {
+    public JpaEntityTableMetadataParserProcessor(RDBTableMetadata tableMetadata, Class<?> entityType) {
         this.tableMetadata = tableMetadata;
         this.entityType = entityType;
         this.mapping = new DefaultEntityColumnMapping(tableMetadata, entityType);
