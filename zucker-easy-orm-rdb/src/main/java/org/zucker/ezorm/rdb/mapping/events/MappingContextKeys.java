@@ -1,9 +1,16 @@
 package org.zucker.ezorm.rdb.mapping.events;
 
+import org.zucker.ezorm.core.param.QueryParam;
 import org.zucker.ezorm.rdb.events.ContextKey;
 import org.zucker.ezorm.rdb.events.ContextKeyValue;
+import org.zucker.ezorm.rdb.executor.wrapper.ColumnWrapperContext;
 import org.zucker.ezorm.rdb.mapping.EntityColumnMapping;
 import org.zucker.ezorm.rdb.operator.DMLOperator;
+import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
+import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperator;
+import org.zucker.ezorm.rdb.operator.dml.insert.InsertOperator;
+import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator;
+import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
 import java.util.Map;
 
@@ -31,6 +38,13 @@ public interface MappingContextKeys {
     ContextKey<DMLOperator> dml = ContextKey.of("dml");
     ContextKey<EntityColumnMapping> columnMapping = ContextKey.of("columnMapping");
 
+    ContextKey<QueryOperator> query = ContextKey.of("query");
+    ContextKey<QueryParam> queryParam = ContextKey.of("queryParam");
+    ContextKey<UpdateOperator> update = ContextKey.of("update");
+    ContextKey<DeleteOperator> delete = ContextKey.of("delete");
+    ContextKey<InsertOperator> insert = ContextKey.of("insert");
+    ContextKey<UpsertOperator> upsert = ContextKey.of("upsert");
+
     ContextKey<Throwable> error = ContextKey.of("error");
 
     static ContextKeyValue<String> type(String val) {
@@ -45,7 +59,55 @@ public interface MappingContextKeys {
         return ContextKeyValue.of(dml, operator);
     }
 
+    static <T> ContextKeyValue<QueryOperator> query(QueryOperator operator) {
+        return ContextKeyValue.of(query, operator);
+    }
+
+    static <T> ContextKeyValue<DeleteOperator> delete(DeleteOperator operator) {
+        return ContextKeyValue.of(delete, operator);
+    }
+
+    static <T> ContextKeyValue<UpdateOperator> update(UpdateOperator operator) {
+        return ContextKeyValue.of(update, operator);
+    }
+
+    static <T> ContextKeyValue<InsertOperator> insert(InsertOperator operator) {
+        return ContextKeyValue.of(insert, operator);
+    }
+
+    static <T> ContextKeyValue<UpsertOperator> upsert(UpsertOperator operator) {
+        return ContextKeyValue.of(upsert, operator);
+    }
+
+    static <T> ContextKeyValue<Throwable> error(Throwable throwable) {
+        return ContextKeyValue.of(error, throwable);
+    }
+
+    static <T> ContextKeyValue<Boolean> reactive(Boolean isReactive) {
+        return ContextKeyValue.of(reactive, isReactive);
+    }
+
+    static <T> ContextKeyValue<ReactiveResultHolder> reactiveResult(ReactiveResultHolder holder) {
+        return ContextKeyValue.of(reactiveResultHolder, holder);
+    }
+
+    static <T> ContextKeyValue<ColumnWrapperContext<T>> columnWrapperContext(ColumnWrapperContext<T> val) {
+        return ContextKeyValue.of(context, val);
+    }
+
+    static <T> ContextKeyValue<T> instance(T val) {
+        return ContextKeyValue.of(instance, val);
+    }
+
     static <T> ContextKeyValue<EntityColumnMapping> columnMapping(EntityColumnMapping val) {
         return ContextKeyValue.of(columnMapping, val);
+    }
+
+    static <T> ContextKeyValue<Map<String, Object>> updateColumnInstance(Map<String, Object> val) {
+        return ContextKeyValue.of(updateColumnInstance, val);
+    }
+
+    static <T> ContextKeyValue<T> result(T val) {
+        return ContextKeyValue.of(result, val);
     }
 }

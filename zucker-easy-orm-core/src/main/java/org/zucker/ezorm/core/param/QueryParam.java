@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 查询参数
@@ -51,6 +50,23 @@ public class QueryParam extends Param implements Serializable, Cloneable {
 
     @Hidden
     private boolean forUpdate = false;
+
+    @Schema(description = "上下文信息")
+    private Map<String, Object> context;
+
+    public Optional<Object> getContext(String key) {
+        if (context == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(context.get(key));
+    }
+
+    public void context(String key, Object value) {
+        if (context == null) {
+            context = new HashMap<>();
+        }
+        context.put(key, value);
+    }
 
     public Sort orderBy(String column) {
         Sort sort = new Sort(column);
@@ -102,6 +118,10 @@ public class QueryParam extends Param implements Serializable, Cloneable {
 
     @Override
     public QueryParam clone() {
-        return ((QueryParam) super.clone());
+        QueryParam queryParam = (QueryParam) super.clone();
+        if (queryParam.context != null) {
+            queryParam.context = new HashMap<>(queryParam.context);
+        }
+        return queryParam;
     }
 }
