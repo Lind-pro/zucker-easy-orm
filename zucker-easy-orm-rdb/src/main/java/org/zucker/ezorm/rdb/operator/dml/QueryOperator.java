@@ -12,6 +12,7 @@ import org.zucker.ezorm.rdb.operator.dml.query.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -137,6 +138,8 @@ public abstract class QueryOperator implements LogicalOperation<QueryOperator> {
     public abstract QueryOperator paging(int pageIndex, int pageSize);
 
     public abstract QueryOperator forUpdate();
+
+    public abstract QueryOperator context(Map<String, Object> context);
 
     public abstract SqlRequest getSql();
 
