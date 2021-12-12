@@ -12,7 +12,10 @@ import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 import org.zucker.ezorm.rdb.operator.DMLOperator;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static org.zucker.ezorm.rdb.operator.dml.query.Selects.count1;
 
 /**
  * @auther: lind
@@ -76,6 +79,20 @@ public class DefaultSyncQuery<T> extends DefaultQuery<T, SyncQuery<T>> implement
         return operator
                 .query(tableMetadata)
                 .context(param.getContext())
-//                .select(); todo
+                .select(count1().as("total"))
+                .where(param.getTerms())
+                .accept(queryOperator ->
+                        tableMetadata.fireEvent(
+                                MappingEventTypes.select_before,
+                                ContextKeys.source(DefaultSyncQuery.this),
+                                MappingContextKeys.query(queryOperator),
+                                MappingContextKeys.dml(operator),
+                                MappingContextKeys.executorType("sync"),
+                                MappingContextKeys.type("count")
+                        ))
+                .fetch(ResultWrappers.optional(ResultWrappers.single(ResultWrappers.column("total", Number.class::cast))))
+                .sync()
+                .map(Number::intValue)
+                .orElse(0);
     }
 }

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * @auther: lind
  * @since: 1.0
- * <p>
+ * <pre>
  * database
  * .dml()
  * .query()
@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
  * .execute()
  * .reactive(map())
  * .subscribe(data->)
+ * </pre>
  */
 public abstract class QueryOperator implements LogicalOperation<QueryOperator> {
 

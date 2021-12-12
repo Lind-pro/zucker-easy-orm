@@ -91,7 +91,7 @@ public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements
     @Override
     public SyncQuery<E> createQuery() {
         // todo
-        return new DefaultSyncQ;
+        return new DefaultSyncQuery<>(getTable(),mapping,operator.dml(),wrapper);
     }
 
     @Override
