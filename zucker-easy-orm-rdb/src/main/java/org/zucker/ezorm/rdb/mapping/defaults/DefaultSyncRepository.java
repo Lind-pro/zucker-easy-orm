@@ -44,10 +44,10 @@ public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements
 
     @Override
     public List<E> findById(Collection<K> primaryKey) {
-        if(primaryKey.isEmpty()){
+        if (primaryKey.isEmpty()) {
             return new ArrayList<>();
         }
-        return createQuery().where().in(getIdColumn(),primaryKey).fetch();
+        return createQuery().where().in(getIdColumn(), primaryKey).fetch();
     }
 
     @Override
@@ -79,19 +79,21 @@ public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements
     }
 
     @Override
-    public void insert(Object data) {
-
+    public void insert(E data) {
+        doInsert(data).sync();
     }
 
     @Override
     public int insertBatch(Collection batch) {
-        return 0;
+        if (batch.size() == 0) {
+            return 0;
+        }
+        return doInsert(batch).sync();
     }
 
     @Override
     public SyncQuery<E> createQuery() {
-        // todo
-        return new DefaultSyncQuery<>(getTable(),mapping,operator.dml(),wrapper);
+        return new DefaultSyncQuery<>(getTable(), mapping, operator.dml(), wrapper);
     }
 
     @Override

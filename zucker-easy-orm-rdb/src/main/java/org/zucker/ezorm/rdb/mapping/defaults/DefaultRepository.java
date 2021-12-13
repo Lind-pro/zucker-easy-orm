@@ -10,15 +10,21 @@ import org.zucker.ezorm.rdb.executor.wrapper.ResultWrapper;
 import org.zucker.ezorm.rdb.mapping.EntityColumnMapping;
 import org.zucker.ezorm.rdb.mapping.LazyEntityColumnMapping;
 import org.zucker.ezorm.rdb.mapping.MappingFeatureType;
+import org.zucker.ezorm.rdb.mapping.events.EventResultOperator;
 import org.zucker.ezorm.rdb.mapping.events.MappingContextKeys;
+import org.zucker.ezorm.rdb.mapping.events.MappingEventTypes;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.DatabaseOperator;
+import org.zucker.ezorm.rdb.operator.dml.insert.InsertOperator;
+import org.zucker.ezorm.rdb.operator.dml.insert.InsertResultOperator;
 import org.zucker.ezorm.rdb.operator.dml.upsert.SaveResultOperator;
 import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.zucker.ezorm.rdb.mapping.events.MappingContextKeys.*;
 
@@ -83,7 +89,9 @@ public abstract class DefaultRepository<E> {
 
     protected String getIdColumn() {
         if (idColumn == null) {
-            this.idColumn = getTable().getColumns().stream()
+            this.idColumn = getTable()
+                    .getColumns()
+                    .stream()
                     .filter(RDBColumnMetadata::isPrimaryKey)
                     .findFirst()
                     .map(RDBColumnMetadata::getName)
@@ -99,8 +107,98 @@ public abstract class DefaultRepository<E> {
         defaultContextKeyValue.add(columnMapping(mapping));
     }
 
-    protected SaveResultOperator doSave(Collection<E> data){
+    private Object getInsertColumnValue(E data, String property, BiConsumer<String, Object> whenDefaultValue) {
+        Object value = propertyOperator.getProperty(data, property).orElse(null);
+        if (value == null) {
+            value = mapping.getColumnByProperty(property)
+                    .flatMap(RDBColumnMetadata::generateDefaultValue)
+                    .orElse(null);
+            if (value != null) {
+                whenDefaultValue.accept(property, value);
+                //回填
+                propertyOperator.setProperty(data, property, value);
+            }
+        }
+        return value;
+    }
+
+    private Object getInsertColumnValue(E data, String property) {
+        return getInsertColumnValue(data, property, (prop, val) -> {
+        });
+    }
+
+    protected SaveResultOperator doSave(Collection<E> batch) {
         RDBTableMetadata table = getTable();
         UpsertOperator upsert = operator.dml().upsert(table.getFullName());
+
+        return EventResultOperator.create(
+                () -> {
+                    upsert.columns(getProperties());
+                    ArrayList<Object> ignore = new ArrayList<>();
+                    for (E e : batch) {
+                        upsert.values(Stream.of(getProperties())
+                                .map(property -> getInsertColumnValue(e, property, (prop, val) -> ignore.add(prop)))
+                                .toArray());
+                    }
+                    upsert.ignoreUpdate(ignore.toArray(new String[0]));
+                    return upsert.execute();
+                },
+                SaveResultOperator.class,
+                table,
+                MappingEventTypes.save_before,
+                MappingEventTypes.save_after,
+                getDefaultContextKeyValue(instance(batch),
+                        type("batch"),
+                        ContextKeys.tableMetadata(table),
+                        upsert(upsert))
+        );
+    }
+
+    protected InsertResultOperator doInsert(E data) {
+        RDBTableMetadata table = getTable();
+        InsertOperator insert = operator.dml().insert(table.getFullName());
+        return EventResultOperator.create(
+                () -> {
+                    for (Map.Entry<String, String> entry : mapping.getColumnPropertyMapping().entrySet()) {
+                        String column = entry.getKey();
+                        String property = entry.getValue();
+                        insert.value(column, getInsertColumnValue(data, property));
+                    }
+                    return insert.execute();
+                },
+                InsertResultOperator.class,
+                table,
+                MappingEventTypes.insert_before,
+                MappingEventTypes.insert_after,
+                getDefaultContextKeyValue(
+                        instance(data),
+                        type("single"),
+                        ContextKeys.tableMetadata(table),
+                        insert(insert))
+        );
+    }
+
+    protected InsertResultOperator doInsert(Collection<E> batch) {
+        RDBTableMetadata table = getTable();
+        InsertOperator insert = operator.dml().insert(table.getFullName());
+        return EventResultOperator.create(
+                () -> {
+                    insert.columns(getProperties());
+                    for (E e : batch) {
+                        insert.values(Stream.of(getProperties())
+                                .map(property -> getInsertColumnValue(e, property))
+                                .toArray());
+                    }
+                    return insert.execute();
+                },
+                InsertResultOperator.class,
+                table,
+                MappingEventTypes.insert_before,
+                MappingEventTypes.insert_after,
+                getDefaultContextKeyValue(
+                        instance(batch),
+                        type("batch"),
+                        ContextKeys.tableMetadata(table),
+                        MappingContextKeys.insert(insert)));
     }
 }
