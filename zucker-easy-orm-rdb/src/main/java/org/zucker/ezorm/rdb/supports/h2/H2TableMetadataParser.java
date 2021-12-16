@@ -2,7 +2,9 @@ package org.zucker.ezorm.rdb.supports.h2;
 
 import org.zucker.ezorm.core.meta.ObjectMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
+import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.supports.commons.RDBTableMetadataParser;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -43,28 +45,34 @@ public class H2TableMetadataParser extends RDBTableMetadataParser {
         super(schema);
     }
 
+
     @Override
-    public List<? extends ObjectMetadata> parseAll() {
-        return super.fastParseAllReactive();
+    public List<RDBTableMetadata> parseAll() {
+        return super.fastParseAll();
+    }
+
+    @Override
+    public Flux<RDBTableMetadata> parseAllReactive() {
+        return super.parseAllReactive();
     }
 
     @Override
     protected String getTableMetaSql(String name) {
-        return null;
+        return TABLE_META_SQL;
     }
 
     @Override
     protected String getTableCommentSql(String name) {
-        return null;
+        return TABLE_COMMENT_SQL;
     }
 
     @Override
     protected String getAllTableSql() {
-        return null;
+        return ALL_TABLE_SQL;
     }
 
     @Override
     protected String getTableExistsSql() {
-        return null;
+        return TABLE_EXISTS_SQL;
     }
 }

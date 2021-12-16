@@ -1,6 +1,6 @@
 package org.zucker.ezorm.rdb.metadata.parser;
 
-import org.zucker.ezorm.core.meta.ObjectMetadata;
+import org.zucker.ezorm.core.FeatureId;
 import org.zucker.ezorm.core.meta.ObjectMetadataParser;
 import org.zucker.ezorm.core.meta.ObjectType;
 import org.zucker.ezorm.rdb.metadata.RDBIndexMetadata;
@@ -15,20 +15,23 @@ import java.util.List;
  */
 public interface IndexMetadataParser extends ObjectMetadataParser {
 
-    String id = "indexMetadataParser";
+    String ID_VALUE = "indexMetadataParser";
+
+
+    FeatureId<IndexMetadataParser> ID = FeatureId.of(ID_VALUE);
 
     @Override
-   default String getId(){
-        return id;
+    default String getId() {
+        return ID_VALUE;
     }
 
     @Override
-   default String getName(){
+    default String getName() {
         return "索引解析器";
     }
 
     @Override
-   default ObjectType getObjectType(){
+    default ObjectType getObjectType() {
         return RDBObjectType.index;
     }
 
