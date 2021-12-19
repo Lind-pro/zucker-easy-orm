@@ -5,6 +5,7 @@ import org.zucker.ezorm.rdb.executor.*;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBIndexMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
+import org.zucker.ezorm.rdb.metadata.parser.IndexMetadataParser;
 import org.zucker.ezorm.rdb.operator.builder.fragments.NativeSql;
 import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 
@@ -44,22 +45,26 @@ public class CommonAlterTableSqlBuilder implements AlterTableSqlBuilder {
                 appendAddColumnCommentSql(batch, newColumn);
             }
         }
-        // index
-        for (RDBIndexMetadata index : newTable.getIndexes()) {
-            if (index.isPrimaryKey()) {
-                continue;
-            }
-            RDBIndexMetadata oldIndex = oldTable.getIndex(index.getName()).orElse(null);
-            if (oldIndex == null) {
-                //add index
-                appendAddIndexSql(batch, newTable, index);
-                continue;
-            }
-            if (index.isChanged(oldIndex)) {
-                appendDropIndexSql(batch, newTable, index);
-                appendAddIndexSql(batch, newTable, index);
+        // 支持索引解析才处理索引
+        if (newTable.findFeature(IndexMetadataParser.ID).isPresent()) {
+            // index
+            for (RDBIndexMetadata index : newTable.getIndexes()) {
+                if (index.isPrimaryKey()) {
+                    continue;
+                }
+                RDBIndexMetadata oldIndex = oldTable.getIndex(index.getName()).orElse(null);
+                if (oldIndex == null) {
+                    //add index
+                    appendAddIndexSql(batch, newTable, index);
+                    continue;
+                }
+                if (index.isChanged(oldIndex)) {
+                    appendDropIndexSql(batch, newTable, index);
+                    appendAddIndexSql(batch, newTable, index);
+                }
             }
         }
+
         return batch;
     }
 
