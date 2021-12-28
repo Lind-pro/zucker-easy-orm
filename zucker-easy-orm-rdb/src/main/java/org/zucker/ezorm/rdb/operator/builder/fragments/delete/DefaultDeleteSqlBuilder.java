@@ -8,6 +8,7 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.key.ForeignKeyMetadata;
 import org.zucker.ezorm.rdb.operator.builder.fragments.*;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.ForeignKeyTermFragmentBuilder;
+import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperatorParameter;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -71,4 +72,5 @@ public class DefaultDeleteSqlBuilder extends AbstractTermsFragmentBuilder<Delete
         term.setTerms(new LinkedList<>());
         return Collections.singletonList(copy);
     }
+
 }

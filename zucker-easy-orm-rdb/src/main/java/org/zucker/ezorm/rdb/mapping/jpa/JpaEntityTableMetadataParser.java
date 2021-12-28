@@ -27,6 +27,7 @@ public class JpaEntityTableMetadataParser implements EntityTableMetadataParser {
     @Setter
     private DataTypeResolver dataTypeResolver = DefaultDataTypeResolver.INSTANCE;
 
+    @Setter
     private ValueCodecResolver valueCodecResolver = DefaultValueCodecResolver.COMMONS;
 
     @Override

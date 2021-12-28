@@ -13,6 +13,7 @@ import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.zucker.ezorm.rdb.operator.dml.query.SortOrder.asc;
@@ -129,6 +130,12 @@ public class BuildParameterQueryOperator extends QueryOperator {
     @Override
     public QueryOperator forUpdate() {
         parameter.setForUpdate(true);
+        return this;
+    }
+
+    @Override
+    public QueryOperator context(Map<String, Object> context) {
+        parameter.setContext(context);
         return this;
     }
 

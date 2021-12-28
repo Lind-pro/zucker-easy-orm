@@ -68,7 +68,9 @@ public class LazyForeignKeyMetadata implements ForeignKeyMetadata {
 
     @Override
     public TableOrViewMetadata getTarget() {
-        return mainTable.getSchema();
+        return mainTable.getSchema()
+                .getTableOrView(builder.getTarget())
+                .orElseThrow(() -> new IllegalArgumentException("target [" + builder.getTarget() + "] doesn't exist"));
     }
 
     @Override
