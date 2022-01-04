@@ -1,0 +1,20 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: ezorm-mysql
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATSBASE: ezorm
+      TZ: Asia/Shanghai
+  mysql8:
+    image: mysql:8
+    container_name: ezorm-mysql8
+    ports:
+      - "13307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ezorm
+      TZ: Asia/Shanghai

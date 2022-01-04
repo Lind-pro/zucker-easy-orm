@@ -4,15 +4,21 @@ import lombok.AllArgsConstructor;
 import org.zucker.ezorm.rdb.mapping.ReactiveRepository;
 import org.zucker.ezorm.rdb.mapping.SyncRepository;
 import org.zucker.ezorm.rdb.mapping.defaults.record.Record;
+import org.zucker.ezorm.rdb.mapping.defaults.record.RecordReactiveRepository;
+import org.zucker.ezorm.rdb.mapping.defaults.record.RecordSyncRepository;
 import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 import org.zucker.ezorm.rdb.operator.ddl.TableBuilder;
 import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperator;
+import org.zucker.ezorm.rdb.operator.dml.delete.ExecutableDeleteOperator;
+import org.zucker.ezorm.rdb.operator.dml.insert.ExecutableInsertOperator;
 import org.zucker.ezorm.rdb.operator.dml.insert.InsertOperator;
 import org.zucker.ezorm.rdb.operator.dml.query.ExecutableQueryOperator;
+import org.zucker.ezorm.rdb.operator.dml.update.ExecutableUpdateOperator;
 import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator;
+import org.zucker.ezorm.rdb.operator.dml.upsert.DefaultUpsertOperator;
 import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
 /**
@@ -42,57 +48,73 @@ public class DefaultDatabaseOperator implements DatabaseOperator, DMLOperator, S
 
     @Override
     public DeleteOperator delete(RDBTableMetadata table) {
-        return null;
+        return ExecutableDeleteOperator.of(table);
     }
 
     @Override
     public UpdateOperator update(RDBTableMetadata table) {
-        return null;
+        return ExecutableUpdateOperator.of(table);
     }
 
     @Override
     public InsertOperator insert(RDBTableMetadata table) {
-        return null;
+        return ExecutableInsertOperator.of(table);
     }
 
     @Override
     public UpsertOperator upsert(RDBTableMetadata table) {
-        return null;
+        return DefaultUpsertOperator.of(table);
     }
 
     @Override
     public QueryOperator query(String tableOrView) {
-        return null;
+        return new ExecutableQueryOperator(
+                metadata.getTableOrView(tableOrView)
+                        .orElseThrow(() -> new UnsupportedOperationException("table or view[" + tableOrView + "] doesn't exist"))
+        );
     }
 
     @Override
     public UpdateOperator update(String table) {
-        return null;
+        return
+                ExecutableUpdateOperator.of(metadata
+                        .getTable(table)
+                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist")));
     }
 
     @Override
     public InsertOperator insert(String table) {
-        return null;
+        return
+                ExecutableInsertOperator.of(
+                        metadata.getTable(table)
+                                .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
+                );
     }
 
     @Override
     public DeleteOperator delete(String table) {
-        return null;
+        return ExecutableDeleteOperator.of(
+                metadata.getTable(table)
+                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
+        );
     }
 
     @Override
     public UpsertOperator upsert(String table) {
-        return null;
+        return DefaultUpsertOperator.of(
+                metadata.getTable(table)
+                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
+        );
     }
 
     @Override
     public <K> SyncRepository<Record, K> createRepository(String tableName) {
-        return null;
+        return new RecordSyncRepository<>(this, tableName);
     }
 
     @Override
     public <K> ReactiveRepository<Record, K> createReactiveRepository(String tableName) {
-        return null;
+        return new RecordReactiveRepository<>(this, tableName);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.zucker.ezorm.rdb.operator.dml.update;
 
+import lombok.AllArgsConstructor;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.builder.fragments.update.UpdateSqlBuilder;
@@ -8,6 +9,7 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.update.UpdateSqlBuilder;
  * @auther: lind
  * @since: 1.0
  */
+@AllArgsConstructor(staticName = "of")
 public class ExecutableUpdateOperator extends BuildParameterUpdateOperator {
 
     private RDBTableMetadata table;
@@ -19,6 +21,6 @@ public class ExecutableUpdateOperator extends BuildParameterUpdateOperator {
 
     @Override
     public UpdateResultOperator execute() {
-        return DefaultUpdateResultOperator.of(table,this::getSql);
+        return DefaultUpdateResultOperator.of(table, this::getSql);
     }
 }

@@ -7,6 +7,7 @@ import org.zucker.ezorm.rdb.mapping.annotation.EnumCodec;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.JDBCType;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,9 @@ public class BasicTestEntity implements Serializable {
 
     @Column
     private Double doubleValue;
+
+    @Column(scale = 1)
+    private BigDecimal bigDecimal;
 
     @Column
     private Long balance;
