@@ -105,12 +105,19 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     @Override
     public ReactiveUpdate<E> createUpdate() {
-        // TODO
-        return new ;
+        return new DefaultReactiveUpdate<>(
+                getTable(),
+                operator.dml().update(getTable().getFullName()),
+                mapping,
+                getDefaultContextKeyValue());
     }
 
     @Override
     public ReactiveDelete createDelete() {
-        return null;
+        return new DefaultReactiveDelete(
+                getTable(),
+                operator.dml().delete(getTable().getFullName()),
+                getDefaultContextKeyValue()
+        );
     }
 }
