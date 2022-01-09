@@ -21,6 +21,7 @@ import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
+import org.zucker.ezorm.rdb.operator.DatabaseOperator;
 import org.zucker.ezorm.rdb.operator.DefaultDatabaseOperator;
 import reactor.core.publisher.Flux;
 
@@ -81,7 +82,7 @@ public abstract class BasicCommonTests {
     @Before
     public void init() {
         RDBDatabaseMetadata metadata = getDatabase();
-        DefaultDatabaseOperator operator = DefaultDatabaseOperator.of(metadata);
+        DatabaseOperator operator = DefaultDatabaseOperator.of(metadata);
 
         JpaEntityTableMetadataParser parser = new JpaEntityTableMetadataParser();
         parser.setDatabaseMetadata(metadata);

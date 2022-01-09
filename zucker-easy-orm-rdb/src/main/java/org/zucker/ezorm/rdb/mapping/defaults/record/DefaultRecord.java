@@ -1,7 +1,5 @@
 package org.zucker.ezorm.rdb.mapping.defaults.record;
 
-import org.zucker.ezorm.core.MethodReferenceColumn;
-
 import java.util.*;
 
 /**

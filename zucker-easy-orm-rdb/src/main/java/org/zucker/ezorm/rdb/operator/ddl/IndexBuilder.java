@@ -13,37 +13,37 @@ public class IndexBuilder {
 
     private RDBTableMetadata table;
 
-    private RDBIndexMetadata index = new RDBIndexMetadata();
+    protected final RDBIndexMetadata index = new RDBIndexMetadata();
 
-    public IndexBuilder(TableBuilder tableBuilder, RDBTableMetadata table){
+    public IndexBuilder(TableBuilder tableBuilder, RDBTableMetadata table) {
         this.tableBuilder = tableBuilder;
         this.table = table;
     }
 
-    public IndexBuilder name(String indexName){
+    public IndexBuilder name(String indexName) {
         index.setName(indexName);
         return this;
     }
 
-    public IndexBuilder unique(){
+    public IndexBuilder unique() {
         index.setUnique(true);
         return this;
     }
 
-    public IndexBuilder column(String column){
-        return column(column,RDBIndexMetadata.IndexSort.asc);
+    public IndexBuilder column(String column) {
+        return column(column, RDBIndexMetadata.IndexSort.asc);
     }
 
-    public IndexBuilder column(String column,String sort){
-        return column(column,RDBIndexMetadata.IndexSort.valueOf(sort));
+    public IndexBuilder column(String column, String sort) {
+        return column(column, RDBIndexMetadata.IndexSort.valueOf(sort));
     }
 
-    public IndexBuilder column(String column,RDBIndexMetadata.IndexSort sort){
-        index.getColumns().add(RDBIndexMetadata.IndexColumn.of(column,sort));
+    public IndexBuilder column(String column, RDBIndexMetadata.IndexSort sort) {
+        index.getColumns().add(RDBIndexMetadata.IndexColumn.of(column, sort));
         return this;
     }
 
-    public TableBuilder commit(){
+    public TableBuilder commit() {
         table.addIndex(index);
         return tableBuilder;
     }

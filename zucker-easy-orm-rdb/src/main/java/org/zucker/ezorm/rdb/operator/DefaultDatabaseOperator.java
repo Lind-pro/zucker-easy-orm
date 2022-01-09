@@ -7,8 +7,10 @@ import org.zucker.ezorm.rdb.mapping.defaults.record.Record;
 import org.zucker.ezorm.rdb.mapping.defaults.record.RecordReactiveRepository;
 import org.zucker.ezorm.rdb.mapping.defaults.record.RecordSyncRepository;
 import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
+import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
+import org.zucker.ezorm.rdb.operator.ddl.DefaultTableBuilder;
 import org.zucker.ezorm.rdb.operator.ddl.TableBuilder;
 import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperator;
@@ -33,12 +35,23 @@ public class DefaultDatabaseOperator implements DatabaseOperator, DMLOperator, S
 
     @Override
     public TableBuilder createOrAlter(String name) {
-        return null;
+        RDBSchemaMetadata schema;
+        String tableName = name;
+        if (name.contains(".")) {
+            String[] arr = name.split("[.]");
+            tableName = arr[1];
+            schema = metadata
+                    .getSchema(arr[0])
+                    .orElseThrow(() -> new UnsupportedOperationException("schema [" + arr[0] + "] doesn't exist"));
+        } else {
+            schema = metadata.getCurrentSchema();
+        }
+        return new LazyTab;
     }
 
     @Override
     public TableBuilder createOrAlter(RDBTableMetadata newTable) {
-        return null;
+        return new DefaultTableBuilder(newTable);
     }
 
     @Override
