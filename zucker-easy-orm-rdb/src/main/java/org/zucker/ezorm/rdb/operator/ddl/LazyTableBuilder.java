@@ -3,6 +3,7 @@ package org.zucker.ezorm.rdb.operator.ddl;
 import org.zucker.ezorm.core.DefaultValue;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.executor.SyncSqlExecutor;
+import org.zucker.ezorm.rdb.executor.reactive.ReactiveSqlExecutor;
 import org.zucker.ezorm.rdb.metadata.*;
 import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.AlterRequest;
 import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.AlterTableSqlBuilder;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @auther: lind
@@ -176,8 +178,44 @@ public class LazyTableBuilder implements TableBuilder {
 
             @Override
             public Mono<Boolean> reactive() {
-                //TODO
-                return null;
+                ReactiveSqlExecutor sqlExecutor = schema.findFeatureNow(ReactiveSqlExecutor.ID);
+
+                return schema
+                        .getTableReactive(tableName, autoLoad)
+                        .map(oldTable -> {
+                            RDBTableMetadata newTable = oldTable.clone();
+                            accept(newTable);
+                            removed.forEach(newTable::removeColumn);
+                            SqlRequest request = buildAlterSql(newTable, oldTable);
+                            if (request.isEmpty()) {
+                                if (merge) {
+                                    oldTable.merge(newTable);
+                                    removed.forEach(oldTable::removeColumn);
+                                } else {
+                                    oldTable.replace(newTable);
+                                }
+                                return Mono.just(true);
+                            }
+                            return sqlExecutor.execute(request)
+                                    .doOnSuccess(ignore -> {
+                                        oldTable.merge(newTable);
+                                        removed.forEach(oldTable::removeColumn);
+                                    })
+                                    .thenReturn(true);
+                        })
+                        .switchIfEmpty(Mono.fromSupplier(() -> {
+                            RDBTableMetadata newTable = schema.newTable(tableName);
+                            accept(newTable);
+                            SqlRequest request = schema.findFeatureNow(CreateTableSqlBuilder.ID).build(newTable);
+                            if (request.isEmpty()) {
+                                return Mono.just(true);
+                            }
+                            return sqlExecutor
+                                    .execute(request)
+                                    .doOnSuccess(ignore -> schema.addTable(newTable))
+                                    .thenReturn(true);
+                        }))
+                        .flatMap(Function.identity());
             }
         };
     }

@@ -11,6 +11,7 @@ import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 import org.zucker.ezorm.rdb.operator.ddl.DefaultTableBuilder;
+import org.zucker.ezorm.rdb.operator.ddl.LazyTableBuilder;
 import org.zucker.ezorm.rdb.operator.ddl.TableBuilder;
 import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 import org.zucker.ezorm.rdb.operator.dml.delete.DeleteOperator;
@@ -46,7 +47,7 @@ public class DefaultDatabaseOperator implements DatabaseOperator, DMLOperator, S
         } else {
             schema = metadata.getCurrentSchema();
         }
-        return new LazyTab;
+        return new LazyTableBuilder(schema, tableName);
     }
 
     @Override
