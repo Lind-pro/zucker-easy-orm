@@ -3,6 +3,7 @@ package org.zucker.ezorm.rdb.metadata;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.hswebframework.utils.StringUtils;
 import org.zucker.ezorm.core.meta.Feature;
 import org.zucker.ezorm.core.meta.ObjectMetadata;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
@@ -18,6 +19,7 @@ import org.zucker.ezorm.rdb.utils.FeatureUtils;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,9 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
     private String alias;
 
     private RDBSchemaMetadata schema;
+
+    @Setter
+    private Consumer<RDBColumnMetadata> onColumnAdded;
 
     protected Map<String, RDBColumnMetadata> allColumns = new ConcurrentHashMap<String, RDBColumnMetadata>() {
         @Override
@@ -86,16 +91,18 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
     }
 
     public void addColumn(RDBColumnMetadata column) {
-
         column.setOwner(this);
         allColumns.put(column.getName(), column);
         allColumns.put(column.getAlias(), column);
-
+        if (onColumnAdded != null) {
+            onColumnAdded.accept(column);
+        }
     }
 
     @Override
     public List<RDBColumnMetadata> getColumns() {
-        return new ArrayList<>(allColumns.values()
+        return new ArrayList<>(allColumns
+                .values()
                 .stream()
                 .sorted()
                 .collect(Collectors.toMap(RDBColumnMetadata::getName, Function.identity(), (_1, _2) -> _1))
@@ -108,7 +115,8 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
                 .values()
                 .stream()
                 .flatMap(c -> getForeignKey()
-                        .stream().map(ForeignKeyMetadata::getTarget)
+                        .stream()
+                        .map(ForeignKeyMetadata::getTarget)
                         .map(TableOrViewMetadata::getColumns)
                         .flatMap(Collection::stream))
                 .sorted()
@@ -117,7 +125,10 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
 
     @Override
     public Optional<RDBColumnMetadata> getColumn(String name) {
-        return Optional.ofNullable(name).map(allColumns::get);
+        if (StringUtils.isNullOrEmpty(name)) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(allColumns.get(name));
     }
 
     @Override
@@ -137,7 +148,8 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
             if (arr.length == 2) {
                 return findColumnFromSchema(schema, arr[0], arr[1]);
             } else if (arr.length == 3) {
-                return schema.getDatabase().getSchema(arr[0])
+                return schema.getDatabase()
+                        .getSchema(arr[0])
                         .flatMap(another -> findColumnFromSchema(another, arr[1], arr[2]));
             }
         }
@@ -158,7 +170,7 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
 
     private Optional<RDBColumnMetadata> findColumnFromSchema(RDBSchemaMetadata schema, String tableName, String column) {
         return Optional.of(schema.getTableOrView(tableName)
-                .flatMap(meta -> meta.getColumn(column)))
+                        .flatMap(meta -> meta.getColumn(column)))
                 .filter(Optional::isPresent)
                 .orElseGet(() -> getForeignKey(tableName)// 查找外键关联信息
                         .flatMap(key -> key.getTarget().getColumn(column)));
@@ -179,7 +191,7 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
 
     @Override
     public void addFeature(Feature feature) {
-        features.put(feature.getId(),feature);
+        features.put(feature.getId(), feature);
     }
 
     @Override
@@ -193,9 +205,9 @@ public abstract class AbstractTableOrViewMetadata implements TableOrViewMetadata
         return (ObjectMetadata) super.clone();
     }
 
-    public RDBColumnMetadata newColumn(){
+    public RDBColumnMetadata newColumn() {
         RDBColumnMetadata column = new RDBColumnMetadata();
-        column.setSortIndex(getColumns().size()+1);
+        column.setSortIndex(getColumns().size() + 1);
         column.setOwner(this);
         return column;
     }

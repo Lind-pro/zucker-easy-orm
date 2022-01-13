@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.zucker.ezorm.core.DefaultValue;
 import org.zucker.ezorm.rdb.executor.CreateIndexParameter;
-import org.zucker.ezorm.rdb.executor.CreateIndexSqlBuilder;
 import org.zucker.ezorm.rdb.executor.DefaultBatchSqlRequest;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
@@ -12,6 +11,7 @@ import org.zucker.ezorm.rdb.metadata.RDBIndexMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.builder.fragments.NativeSql;
 import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
+import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CreateIndexSqlBuilder;
 import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CreateTableSqlBuilder;
 
 /**
@@ -62,12 +62,14 @@ public class MysqlCreateTableSqlBuilder implements CreateTableSqlBuilder {
             }
         }
         createTable.addSql(") ENGINE=", engine, "DEFAULT CHARTSET=", charset);
-        if (table.getColumns() != null) {
+        if (table.getComment() != null) {
             createTable.addSql("COMMENT=", "'".concat(table.getComment()).concat("'"));
         }
 
+        System.out.println(table.findFeature(CreateIndexSqlBuilder.ID));
         table.findFeature(CreateIndexSqlBuilder.ID)
                 .ifPresent(builder -> {
+                    System.out.println(builder + "===builder");
                     for (RDBIndexMetadata tableIndex : table.getIndexes()) {
                         sql.addBatch(builder.build(CreateIndexParameter.of(table, tableIndex)));
                     }

@@ -5,12 +5,13 @@ import lombok.SneakyThrows;
 import org.zucker.ezorm.rdb.ConnectionProvider;
 import org.zucker.ezorm.rdb.TestSyncSqlExecutor;
 import org.zucker.ezorm.rdb.executor.SqlRequests;
+import org.zucker.ezorm.rdb.executor.SyncSqlExecutor;
 import org.zucker.ezorm.rdb.executor.wrapper.ResultWrappers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
+/**TestSyncSqlExecutor
  * @auther: lind
  * @since: 1.0
  */
@@ -38,7 +39,7 @@ public class Mysql8ConnectionProvider implements ConnectionProvider {
     }
 
     public static void main(String[] args) {
-        TestSyncSqlExecutor executor = new TestSyncSqlExecutor(new Mysql8ConnectionProvider());
+        SyncSqlExecutor executor = new TestSyncSqlExecutor(new Mysql8ConnectionProvider());
         System.out.println(executor.select(SqlRequests.of("show index from ezorm.table_name"), ResultWrappers.mapList()));
     }
 }

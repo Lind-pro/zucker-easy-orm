@@ -12,6 +12,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CreateTableSqlBuilder
 import org.zucker.ezorm.rdb.utils.ExceptionUtils;
 import reactor.core.publisher.Mono;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -31,20 +33,32 @@ public class DefaultTableBuilder implements TableBuilder {
     private boolean autoLoad = true;
     private boolean merge = true;
 
+    private final Set<String> removed = new HashSet<>();
+
     public DefaultTableBuilder(RDBTableMetadata table) {
         this.table = table;
         this.schema = table.getSchema();
     }
 
     @Override
-    public TableBuilder addColumn(RDBColumnMetadata column) {
-        table.addColumn(column);
-        return this;
+    public IndexBuilder index() {
+        return new IndexBuilder(this, table);
+    }
+
+    @Override
+    public ForeignKeyDSLBuilder foreignKey() {
+        return new ForeignKeyDSLBuilder(this, table);
     }
 
     @Override
     public TableBuilder custom(Consumer<RDBTableMetadata> consumer) {
         consumer.accept(table);
+        return this;
+    }
+
+    @Override
+    public TableBuilder addColumn(RDBColumnMetadata column) {
+        table.addColumn(column);
         return this;
     }
 
@@ -68,12 +82,14 @@ public class DefaultTableBuilder implements TableBuilder {
     @Override
     public TableBuilder removeColumn(String name) {
         table.removeColumn(name);
+        removed.add(name);
         return this;
     }
 
     @Override
     public TableBuilder dropColumn(String name) {
         table.removeColumn(name);
+        removed.add(name);
         dropColumn = true;
         return this;
     }
@@ -108,15 +124,6 @@ public class DefaultTableBuilder implements TableBuilder {
         return this;
     }
 
-    @Override
-    public IndexBuilder index() {
-        return new IndexBuilder(this, table);
-    }
-
-    @Override
-    public ForeignKeyDSLBuilder foreignKey() {
-        return new ForeignKeyDSLBuilder(table);
-    }
 
     private SqlRequest buildAlterSql(RDBTableMetadata oldTable) {
         return schema
@@ -141,7 +148,10 @@ public class DefaultTableBuilder implements TableBuilder {
                 if (oldTable != null) {
                     sqlRequest = buildAlterSql(oldTable);
                     if (merge) {
-                        whenComplete = () -> oldTable.merge(table);
+                        whenComplete = () -> {
+                            oldTable.merge(table);
+                            removed.forEach(oldTable::removeColumn);
+                        };
                     } else {
                         whenComplete = () -> oldTable.replace(table);
                     }
@@ -172,13 +182,17 @@ public class DefaultTableBuilder implements TableBuilder {
                             if (request.isEmpty()) {
                                 if (merge) {
                                     oldTable.merge(table);
+                                    removed.forEach(oldTable::removeColumn);
                                 } else {
                                     oldTable.replace(table);
                                 }
                                 return Mono.just(true);
                             }
                             return sqlExecutor.execute(request)
-                                    .doOnSuccess(ignore -> oldTable.merge(table))
+                                    .doOnSuccess(ignore -> {
+                                        oldTable.merge(table);
+                                        removed.forEach(oldTable::removeColumn);
+                                    })
                                     .thenReturn(true);
                         })
                         .switchIfEmpty(Mono.fromSupplier(() -> {

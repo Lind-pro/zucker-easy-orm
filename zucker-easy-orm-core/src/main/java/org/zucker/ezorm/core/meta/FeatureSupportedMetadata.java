@@ -5,6 +5,7 @@ import org.zucker.ezorm.core.FeatureId;
 import org.zucker.ezorm.core.FeatureType;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
@@ -46,7 +47,7 @@ public interface FeatureSupportedMetadata {
     }
 
     default <T extends Feature> Optional<T> findFeature(FeatureId<T> id) {
-        return getFeature(id.getId());
+        return findFeature(id.getId());
     }
 
     default <T extends Feature> T findFeatureNow(FeatureId<T> id) {
@@ -54,17 +55,38 @@ public interface FeatureSupportedMetadata {
     }
 
     default <T extends Feature> Optional<T> findFeature(String id) {
-        return getFeature(id);
+        return Optional.ofNullable(findFeatureOrElse(id, null));
+    }
+
+
+    default <T extends Feature> T findFeatureOrElse(FeatureId<T> id, Supplier<T> orElse) {
+        return findFeatureOrElse(id.getId(), orElse);
+    }
+
+    default <T extends Feature> T findFeatureOrElse(String id, Supplier<T> orElse) {
+        return getFeatureOrElse(id, orElse);
     }
 
     default <T extends Feature> T findFeatureNow(String id) {
-        return this.<T>findFeature(id)
-                .orElseThrow(() -> new UnsupportedOperationException("unsupported feature " + id));
+        return this.findFeatureOrElse(id, () -> {
+            throw new UnsupportedOperationException("unsupported feature " + id);
+        });
     }
 
     default <T extends Feature> T getFeatureNow(String id) {
-        return this.<T>getFeature(id)
-                .orElseThrow(() -> new UnsupportedOperationException("unsupported feature " + id));
+        return this.getFeatureOrElse(id, () -> {
+            throw new UnsupportedOperationException("unsupported feature " + id);
+        });
+    }
+
+    default <T extends Feature> T getFeatureOrElse(String id, Supplier<T> orElse) {
+        Map<String, Feature> featureMap = getFeatures();
+        System.out.println(featureMap + "==Map");
+        Feature feature = featureMap.get(id);
+        if (feature != null) {
+            return CastUtil.cast(feature);
+        }
+        return orElse == null ? null : orElse.get();
     }
 
     default <T extends Feature> Optional<T> getFeature(String id) {

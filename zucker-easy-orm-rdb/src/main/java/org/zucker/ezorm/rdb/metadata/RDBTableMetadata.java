@@ -34,12 +34,6 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
         setName(name);
     }
 
-    public Optional<RDBIndexMetadata> getIndex(String indexName) {
-        return indexes.stream()
-                .filter(index -> index.getName().equalsIgnoreCase(indexName))
-                .findFirst();
-    }
-
     public RDBTableMetadata() {
         super();
         addFeature(BatchInsertSqlBuilder.of(this));
@@ -48,15 +42,16 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
         addFeature(DefaultSaveOrUpdateOperator.of(this));
     }
 
-    public void addIndex(RDBIndexMetadata index) {
-        Objects.requireNonNull(index.getName(), "index name can not be null");
-        index.setTableName(getName());
-        indexes.add(index);
+    public Optional<ConstraintMetadata> getConstraint(String name) {
+        return constraints
+                .stream()
+                .filter(metadata -> metadata.getName().equalsIgnoreCase(name))
+                .findFirst();
     }
 
-    public Optional<ConstraintMetadata> getConstraint(String name) {
-        return constraints.stream()
-                .filter(metadata -> metadata.getName().equalsIgnoreCase(name))
+    public Optional<RDBIndexMetadata> getIndex(String indexName) {
+        return indexes.stream()
+                .filter(index -> index.getName().equalsIgnoreCase(indexName))
                 .findFirst();
     }
 
@@ -64,6 +59,22 @@ public class RDBTableMetadata extends AbstractTableOrViewMetadata implements Clo
         Objects.requireNonNull(metadata.getName(), "Constraint name can not be null");
         metadata.setTableName(this.getName());
         constraints.add(metadata);
+    }
+
+
+    public void addIndex(RDBIndexMetadata index) {
+        Objects.requireNonNull(index.getName(), "index name can not be null");
+        index.setTableName(getName());
+        indexes.add(index);
+
+        for (RDBIndexMetadata.IndexColumn column : index.getColumns()) {
+            getColumn(column.getColumn())
+                    .ifPresent(columnMetadata -> {
+                        if (index.isPrimaryKey()) {
+                            columnMetadata.setPrimaryKey(true);
+                        }
+                    });
+        }
     }
 
     @Override

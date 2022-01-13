@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,7 +50,7 @@ public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMet
     List<RDBColumnMetadata> findColumns();
 
     /**
-     * 获取当前表或者试图队列
+     * 获取当前表或者试图对列
      *
      * @param name 列名或者别名
      * @return
@@ -57,7 +58,7 @@ public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMet
     Optional<RDBColumnMetadata> getColumn(String name);
 
     /**
-     * 查找列，可查找通过外键关联表队列或者其他表队列
+     * 查找列，可查找通过外键关联表队列或者其他表对列
      *
      * @param name
      * @return
@@ -104,6 +105,12 @@ public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMet
         fireEvent(eventType, ctx -> ctx.set(keyValues));
     }
 
+    /**
+     * 触发事件，如果存在触发器
+     *
+     * @param eventType       事件类型
+     * @param contextConsumer 上下文消费者
+     */
     default void fireEvent(EventType eventType, Consumer<EventContext> contextConsumer) {
         this.findFeature(EventListener.ID)
                 .ifPresent(eventListener -> {
@@ -114,6 +121,22 @@ public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMet
                 });
     }
 
+    default String getFullName() {
+        return getSchema().getName().concat(".").concat(getName());
+    }
+
+    default <T extends Feature> T findFeatureOrElse(String id, Supplier<T> orElse) {
+        T current = getFeatureOrElse(id, null);
+        if (null != current) {
+            return current;
+        }
+        RDBSchemaMetadata schema = getSchema();
+        if (schema != null) {
+            return schema.findFeatureOrElse(id, null);
+        }
+        return orElse == null ? null : orElse.get();
+    }
+
     default List<Feature> findFeatures(Predicate<Feature> predicate) {
         return Stream.concat(getSchema().getFeatureList().stream(), getFeatureList().stream())
                 .filter(predicate)
@@ -122,14 +145,6 @@ public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMet
 
     default List<Feature> findFeatures() {
         return findFeatures((feature -> true));
-    }
-
-    default String getFullName() {
-        return getSchema().getName().concat(".").concat(getName());
-    }
-
-    default <T extends Feature> Optional<T> findFeature(FeatureId<T> id) {
-        return findFeature(id.getId());
     }
 
     default <T extends Feature> Optional<T> findFeature(String id) {
