@@ -81,7 +81,6 @@ public interface FeatureSupportedMetadata {
 
     default <T extends Feature> T getFeatureOrElse(String id, Supplier<T> orElse) {
         Map<String, Feature> featureMap = getFeatures();
-        System.out.println(featureMap + "==Map");
         Feature feature = featureMap.get(id);
         if (feature != null) {
             return CastUtil.cast(feature);
