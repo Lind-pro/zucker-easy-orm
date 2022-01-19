@@ -7,9 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.zucker.ezorm.core.ValueCodec;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -80,6 +78,22 @@ public class DateTimeCodec implements ValueCodec {
         if (data instanceof Date) {
             if (toType == Date.class) {
                 return data;
+            }
+            if (toType == Instant.class) {
+                return ((Date) data).toInstant();
+            }
+            if (toType == LocalDateTime.class) {
+                return LocalDateTime.ofInstant(((Date) data).toInstant(), ZoneId.systemDefault());
+            }
+            if (toType == LocalDate.class) {
+                return LocalDateTime
+                        .ofInstant(((Date) data).toInstant(), ZoneId.systemDefault())
+                        .toLocalDate();
+            }
+            if (toType == LocalTime.class) {
+                return LocalDateTime
+                        .ofInstant(((Date) data).toInstant(), ZoneId.systemDefault())
+                        .toLocalTime();
             }
             if (toType == String.class) {
                 return DateTimeUtils.format((Date) data, format);
