@@ -47,7 +47,7 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
     @Setter
     private ObjectMapper mapper = defaultMapper;
 
-    public static JsonValueCodec of(Class targetType) {
+    public static JsonValueCodec of(Class<?> targetType) {
         return new JsonValueCodec(targetType, defaultMapper.getTypeFactory().constructType(targetType));
     }
 
@@ -132,7 +132,7 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
         } else if (data instanceof byte[]) {
             target = mapper.readValue((byte[]) data, jacksonType);
         } else if (data instanceof String) {
-            target = mapper.readValue((String) data, jacksonType);
+            target = mapper.readValue(((String) data), jacksonType);
         } else if (data instanceof ByteBuffer) {
             return doRead(new ByteBufferBackedInputStream((ByteBuffer) data));
         } else if (FeatureUtils.r2dbcIsAlive()) {

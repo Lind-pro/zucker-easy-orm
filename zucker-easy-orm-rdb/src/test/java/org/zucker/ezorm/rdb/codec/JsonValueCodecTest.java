@@ -1,9 +1,17 @@
 package org.zucker.ezorm.rdb.codec;
 
+import com.alibaba.fastjson.JSON;
+import io.r2dbc.postgresql.codec.Json;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,5 +65,67 @@ public class JsonValueCodecTest {
         Assert.assertEquals(val.get("b"), Integer.valueOf(2));
     }
 
-    //TODO
+    @Test
+    public void testEntity() {
+        JsonValueCodec codec = JsonValueCodec.of(JsonCodecEntity.class);
+        Object val = codec.decode("{\"name\":\"test\",\"time\":\"2022-01-24\"}");
+
+        Assert.assertTrue(val instanceof JsonCodecEntity);
+        JsonCodecEntity entity = (JsonCodecEntity) val;
+
+        Assert.assertEquals(entity.name, "test");
+        Assert.assertNotNull(entity.time);
+    }
+
+    @Test
+    @SneakyThrows
+    public void testField() {
+        JsonValueCodec codec = JsonValueCodec.ofField(JsonCodecEntity.class.getDeclaredField("nest"));
+        Object val = codec.decode("{\"nest\":{\"name\":\"test\"}}");
+
+        Assert.assertTrue(val instanceof Map);
+        JsonCodecEntity entity = (JsonCodecEntity) ((Map<?, ?>) val).get("nest");
+
+        Assert.assertEquals(entity.name, "test");
+    }
+
+    @Test
+    @SneakyThrows
+    public void testField2() {
+        JsonValueCodec codec = JsonValueCodec.ofField(JsonCodecEntity.class.getDeclaredField("nest2"));
+
+        Object val = codec.decode("[{\"name\":\"test\"}]");
+
+        Assert.assertTrue(val instanceof List);
+        JsonCodecEntity entity = (JsonCodecEntity) ((List<?>) val).get(0);
+        Assert.assertEquals(entity.name, "test");
+    }
+
+    @Test
+    @SneakyThrows
+    public void testMono() {
+        JsonValueCodec codec = JsonValueCodec.ofField(JsonCodecEntity.class.getDeclaredField("mono"));
+        System.out.println(codec);
+        {
+            Object val = codec.decode("{\"name\":\"test\"}");
+
+            Assert.assertTrue(val instanceof Mono);
+            JsonCodecEntity entity = ((Mono<JsonCodecEntity>) val).block();
+            Assert.assertEquals(entity.name, "test");
+        }
+
+    }
+
+    @Getter
+    @Setter
+    public static class JsonCodecEntity {
+        private String name;
+        private Date time;
+
+        private Map<String, JsonCodecEntity> nest;
+        private List<JsonCodecEntity> nest2;
+        private Mono<JsonCodecEntity> mono;
+
+        private Flux<JsonCodecEntity> flux;
+    }
 }
