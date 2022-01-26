@@ -4,7 +4,6 @@ import org.zucker.ezorm.core.FeatureType;
 import org.zucker.ezorm.core.meta.Feature;
 import org.zucker.ezorm.core.meta.FeatureSupportedMetadata;
 import org.zucker.ezorm.core.meta.ObjectMetadata;
-import sun.jvm.hotspot.opto.CallNode;
 
 import java.util.Comparator;
 import java.util.List;

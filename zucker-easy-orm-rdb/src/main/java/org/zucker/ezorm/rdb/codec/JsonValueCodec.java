@@ -1,9 +1,11 @@
 package org.zucker.ezorm.rdb.codec;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
+import jdk.nashorn.api.scripting.JSObject;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.nio.ByteBuffer;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -40,9 +43,9 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
         defaultMapper.setTimeZone(TimeZone.getDefault());
     }
 
-    private JavaType jacksonType;
+    private final JavaType jacksonType;
 
-    private Class targetType;
+    private final Class<?> targetType;
 
     @Setter
     private ObjectMapper mapper = defaultMapper;
@@ -51,11 +54,13 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
         return new JsonValueCodec(targetType, defaultMapper.getTypeFactory().constructType(targetType));
     }
 
-    public static JsonValueCodec ofCollection(Class<? extends Collection> targetType, Class elementType) {
-        return new JsonValueCodec(targetType, defaultMapper.getTypeFactory().constructCollectionType(targetType, elementType));
+    public static JsonValueCodec ofCollection(Class<? extends Collection> targetType, Class<?> elementType) {
+        return new JsonValueCodec(targetType, defaultMapper
+                .getTypeFactory()
+                .constructCollectionType(targetType, elementType));
     }
 
-    public static JsonValueCodec ofMap(Class<? extends Map> targetType, Class keyType, Class valueType) {
+    public static JsonValueCodec ofMap(Class<? extends Map> targetType, Class<?> keyType, Class<?> valueType) {
         return new JsonValueCodec(targetType, defaultMapper.getTypeFactory()
                 .constructMapType(targetType, keyType, valueType));
     }
@@ -72,14 +77,16 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
         if (Map.class.isAssignableFrom(targetType)) {
             if (genericType instanceof ParameterizedType) {
                 Type[] types = ((ParameterizedType) genericType).getActualTypeArguments();
-                jacksonType = defaultMapper.getTypeFactory().constructMapType(targetType, (Class<?>) types[0], (Class<?>) types[1]);
+                jacksonType = defaultMapper
+                        .getTypeFactory()
+                        .constructMapType(targetType, (Class) types[0], (Class) types[1]);
             }
         } else if (Collection.class.isAssignableFrom(targetType)) {
             if (genericType instanceof ParameterizedType) {
                 Type[] types = ((ParameterizedType) genericType).getActualTypeArguments();
                 jacksonType = defaultMapper
                         .getTypeFactory()
-                        .constructCollectionType(targetType, (Class<?>) types[0]);
+                        .constructCollectionType(targetType, (Class) types[0]);
             }
         } else if (targetType.isArray()) {
             jacksonType = defaultMapper
@@ -87,12 +94,12 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
                     .constructArrayType(targetType.getComponentType());
         }
         if (jacksonType == null) {
-            jacksonType = defaultMapper.getTypeFactory().constructArrayType(targetType);
+            jacksonType = defaultMapper.getTypeFactory().constructType(targetType);
         }
         return new JsonValueCodec(type, jacksonType);
     }
 
-    public JsonValueCodec(Class targetType, JavaType type) {
+    public JsonValueCodec(Class<?> targetType, JavaType type) {
         this.jacksonType = type;
         this.targetType = targetType;
     }
@@ -106,7 +113,37 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
         if (value instanceof String) {
             return value;
         }
+        // 适配nashorn
+        if (value instanceof JSObject) {
+            value = convertJSObject((JSObject) value);
+        }
         return mapper.writeValueAsString(value);
+    }
+
+    private Object convertJSObject(JSObject jsObject) {
+        if (jsObject.isArray()) {
+            return jsObject
+                    .values()
+                    .stream()
+                    .map(obj -> {
+                        if (obj instanceof JSObject) {
+                            return convertJSObject((JSObject) obj);
+                        }
+                        return obj;
+                    }).collect(Collectors.toList());
+        }
+        if (jsObject instanceof Map) {
+            HashMap<Object, Object> newMap = new HashMap<>(((Map<?, ?>) jsObject).size());
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) jsObject).entrySet()) {
+                Object val = entry.getValue();
+                if (val instanceof JSObject) {
+                    val = convertJSObject((JSObject) val);
+                }
+                newMap.put(entry.getKey(), val);
+            }
+            return newMap;
+        }
+        return JSON.toJSON(jsObject);
     }
 
     @SneakyThrows
@@ -168,4 +205,5 @@ public class JsonValueCodec implements ValueCodec<Object, Object> {
         log.warn("unsupported json format:{}", data);
         return target;
     }
+
 }
