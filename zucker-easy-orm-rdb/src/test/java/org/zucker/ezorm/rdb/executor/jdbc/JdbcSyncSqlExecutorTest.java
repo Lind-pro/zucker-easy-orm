@@ -1,6 +1,5 @@
 package org.zucker.ezorm.rdb.executor.jdbc;
 
-import lombok.Data;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +13,6 @@ import org.zucker.ezorm.rdb.supports.h2.H2ConnectionProvider;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @auther: lind
