@@ -8,6 +8,7 @@ import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 
 import java.math.BigDecimal;
 import java.sql.JDBCType;
+import java.util.Date;
 import java.util.function.Consumer;
 
 /**
@@ -62,7 +63,15 @@ public interface ColumnBuilder {
         return defaultValue(value);
     }
 
-    default ColumnBuilder number(int precision,int scale){
-        return type(JDBCType.NUMERIC, BigDecimal.class).length(precision,scale);
+    default ColumnBuilder number(int precision, int scale) {
+        return type(JDBCType.NUMERIC, BigDecimal.class).length(precision, scale);
+    }
+
+    default ColumnBuilder number(int len) {
+        return type(JDBCType.NUMERIC, Long.class).length(len, 0);
+    }
+
+    default ColumnBuilder datetime() {
+        return type(JDBCType.TIMESTAMP, Date.class);
     }
 }

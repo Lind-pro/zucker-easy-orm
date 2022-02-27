@@ -1,6 +1,5 @@
 package org.zucker.ezorm.rdb.mapping.parser;
 
-import com.sun.tools.corba.se.idl.InterfaceEntry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -14,7 +13,6 @@ import org.zucker.ezorm.rdb.metadata.DataType;
 import javax.persistence.Column;
 import java.beans.PropertyDescriptor;
 import java.sql.JDBCType;
-import java.sql.SQLType;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
