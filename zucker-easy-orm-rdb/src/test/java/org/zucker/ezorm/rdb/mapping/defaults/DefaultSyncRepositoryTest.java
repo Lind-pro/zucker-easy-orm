@@ -2,6 +2,7 @@ package org.zucker.ezorm.rdb.mapping.defaults;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.zucker.ezorm.rdb.TestReactiveSqlExecutor;
 import org.zucker.ezorm.rdb.TestSyncSqlExecutor;
 import org.zucker.ezorm.rdb.mapping.EntityColumnMapping;
 import org.zucker.ezorm.rdb.mapping.MappingFeatureType;
@@ -16,7 +17,6 @@ import org.zucker.ezorm.rdb.operator.DefaultDatabaseOperator;
 import org.zucker.ezorm.rdb.operator.ddl.TableDDLResultOperator;
 import org.zucker.ezorm.rdb.supports.h2.H2ConnectionProvider;
 import org.zucker.ezorm.rdb.supports.h2.H2SchemaMetadata;
-import reactor.core.publisher.Flux;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +35,7 @@ public class DefaultSyncRepositoryTest {
         databaseMetadata.setCurrentSchema(h2);
         databaseMetadata.addSchema(h2);
         databaseMetadata.addFeature(new TestSyncSqlExecutor(new H2ConnectionProvider()));
+//        databaseMetadata.addFeature(new TestReactiveSqlExecutor(new H2));
 
         DefaultDatabaseOperator operator = DefaultDatabaseOperator.of(databaseMetadata);
         TableDDLResultOperator resultOperator = operator.ddl()

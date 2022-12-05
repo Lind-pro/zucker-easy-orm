@@ -1,11 +1,11 @@
 package org.zucker.ezorm.rdb.metadata;
 
-import com.google.protobuf.NullValue;
 import lombok.*;
 import org.zucker.ezorm.core.FeatureId;
 import org.zucker.ezorm.core.PropertyWrapper;
 import org.zucker.ezorm.core.RuntimeDefaultValue;
 import org.zucker.ezorm.core.meta.*;
+import org.zucker.ezorm.rdb.executor.NullValue;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 
 import java.sql.SQLType;
