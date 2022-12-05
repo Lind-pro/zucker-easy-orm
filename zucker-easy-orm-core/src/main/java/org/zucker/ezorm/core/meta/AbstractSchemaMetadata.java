@@ -13,6 +13,7 @@ import java.nio.file.OpenOption;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -175,16 +176,16 @@ public abstract class AbstractSchemaMetadata implements SchemaMetadata {
         features.put(feature.getId(), feature);
     }
 
-    public <T extends Feature> Optional<T> findFeature(FeatureId<T> id) {
-        return findFeature(id.getId());
-    }
-
-    public <T extends Feature> Optional<T> findFeature(String id) {
-        return Optional.of(this.<T>getFeature(id))
-                .filter(Optional::isPresent)
-                .orElseGet(() -> Optional
-                        .ofNullable(getDatabase())
-                        .flatMap(database -> database.getFeature(id)));
+    public <T extends Feature> T findFeatureOrElse(String id, Supplier<T> orElse) {
+        T current = getFeatureOrElse(id, null);
+        if (null != current) {
+            return current;
+        }
+        DatabaseMetadata<?> db = getDatabase();
+        if (db != null) {
+            return db.findFeatureOrElse(id, null);
+        }
+        return orElse == null ? null : orElse.get();
     }
 
     @Override
@@ -192,6 +193,6 @@ public abstract class AbstractSchemaMetadata implements SchemaMetadata {
     public AbstractSchemaMetadata clone() {
         AbstractSchemaMetadata schema = (AbstractSchemaMetadata) super.clone();
         schema.features = new HashMap<>(features);
-        return null;
+        return schema;
     }
 }

@@ -33,7 +33,7 @@ public interface SyncSqlExecutor extends Feature {
     }
 
     @Override
-    default FeatureType getType() {
+    default RDBFeatureType getType() {
         return RDBFeatureType.sqlExecutor;
     }
 
