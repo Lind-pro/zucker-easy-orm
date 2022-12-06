@@ -66,8 +66,8 @@ public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements
     }
 
     @Override
-    public SaveResult save(Collection list) {
-        return null;
+    public SaveResult save(Collection<E> list) {
+        return doSave(list).sync();
     }
 
     @Override

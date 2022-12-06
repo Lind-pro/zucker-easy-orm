@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.collections.CollectionUtils;
 import org.zucker.ezorm.core.param.Term;
+import org.zucker.ezorm.rdb.executor.EmptySqlRequest;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
@@ -32,13 +33,16 @@ public class DefaultUpdateSqlBuilder extends AbstractTermsFragmentBuilder<Update
 
     @Override
     public SqlRequest build(UpdateOperatorParameter parameter) {
+
         if (CollectionUtils.isEmpty(parameter.getColumns())) {
-            throw new UnsupportedOperationException("no columns are updated");
+            return EmptySqlRequest.INSTANCE;
         }
         if (CollectionUtils.isEmpty(parameter.getWhere())) {
             throw new UnsupportedOperationException("unsupported no conditions update");
         }
+
         PrepareSqlFragments fragments = PrepareSqlFragments.of();
+
         fragments.addSql("update", table.getFullName(), "set");
         int index = 0;
         for (UpdateColumn column : parameter.getColumns()) {
@@ -82,7 +86,9 @@ public class DefaultUpdateSqlBuilder extends AbstractTermsFragmentBuilder<Update
             throw new UnsupportedOperationException("No columns are update");
         }
         fragments.addSql("where");
+
         SqlFragments where = createTermFragments(parameter, parameter.getWhere());
+
         if (where.isEmpty()) {
             throw new UnsupportedOperationException("Unsupported No Conditions update");
         }
