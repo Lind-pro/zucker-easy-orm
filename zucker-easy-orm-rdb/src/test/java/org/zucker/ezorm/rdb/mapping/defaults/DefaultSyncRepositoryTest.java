@@ -14,6 +14,7 @@ import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 import org.zucker.ezorm.rdb.operator.DefaultDatabaseOperator;
+import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.ddl.TableDDLResultOperator;
 import org.zucker.ezorm.rdb.supports.h2.H2ConnectionProvider;
 import org.zucker.ezorm.rdb.supports.h2.H2SchemaMetadata;
@@ -82,6 +83,7 @@ public class DefaultSyncRepositoryTest {
 
     @Test
     public void testCrud() {
+
         TestEntity entity = new TestEntity();
         entity.setId("test");
         entity.setName("test");

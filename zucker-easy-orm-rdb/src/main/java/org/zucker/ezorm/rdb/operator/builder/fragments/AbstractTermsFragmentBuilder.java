@@ -37,7 +37,7 @@ public abstract class AbstractTermsFragmentBuilder<T> {
      * @return BlockSqlFragments
      * @see BlockSqlFragments
      */
-    protected BlockSqlFragments createBlockFragments(T parameter, List<Term> terms) {
+    private BlockSqlFragments createBlockFragments(T parameter, List<Term> terms) {
         BlockSqlFragments fragments = BlockSqlFragments.of();
 
         int index = 0;

@@ -119,6 +119,7 @@ public class DefaultUpdateSqlBuilder extends AbstractTermsFragmentBuilder<Update
                         .findFeature(TermFragmentBuilder.createFeatureId(term.getTermType()))
                         .map(termFragment -> termFragment.createFragments(column.getQuoteName(), column, term)))
                 .orElse(EmptySqlFragments.INSTANCE);
+
     }
 
     protected List<Term> createForeignKeyTerm(ForeignKeyMetadata keyMetadata, Term term) {
