@@ -10,23 +10,28 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * @auther: lind
- * @since: 1.0
- */
-@Setter
+
 @Getter
+@Setter
 @NoArgsConstructor(staticName = "of")
 @AllArgsConstructor(staticName = "of")
 public class PrepareSqlFragments implements SqlFragments {
 
-    private List<String> sql = new ArrayList<>(64);
-    private List<Object> parameters = new ArrayList<>(8);
+    public static PrepareSqlFragments of(String sql, Object... parameter) {
+        return PrepareSqlFragments
+                .of()
+                .addSql(sql)
+                .addParameter(parameter);
+    }
 
     @Override
     public boolean isEmpty() {
         return sql.isEmpty();
     }
+
+    private List<String> sql = new ArrayList<>(64);
+
+    private List<Object> parameters = new ArrayList<>(16);
 
     public void removeLastSql() {
         if (sql.isEmpty()) {
@@ -36,6 +41,7 @@ public class PrepareSqlFragments implements SqlFragments {
     }
 
     public PrepareSqlFragments addFragments(SqlFragments fragments) {
+
         return addSql(fragments.getSql())
                 .addParameter(fragments.getParameters());
     }
@@ -49,30 +55,32 @@ public class PrepareSqlFragments implements SqlFragments {
         return this;
     }
 
+    @SuppressWarnings("all")
     public PrepareSqlFragments addSql(Collection<String> sql) {
-        this.sql.addAll(sql);
+        for (String s : sql) {
+            this.sql.add(s);
+        }
         return this;
     }
 
-    public PrepareSqlFragments addParameter(Collection<Object> parameter) {
-        this.parameters.addAll(parameter);
+    @SuppressWarnings("all")
+    public PrepareSqlFragments addParameter(Collection<?> parameter) {
+        for (Object o : parameter) {
+            this.parameters.add(o);
+        }
         return this;
     }
 
+    @SuppressWarnings("all")
     public PrepareSqlFragments addParameter(Object... parameter) {
-        return this.addParameter(Arrays.asList(parameter));
+        for (Object o : parameter) {
+            this.parameters.add(o);
+        }
+        return this;
     }
 
     @Override
     public String toString() {
         return toRequest().getSql();
     }
-
-
-    public static PrepareSqlFragments of(String sql, Object... parameter) {
-        return PrepareSqlFragments.of()
-                .addSql(sql)
-                .addParameter(parameter);
-    }
-
 }

@@ -1,6 +1,7 @@
 package org.zucker.ezorm.rdb.mapping;
 
 import org.zucker.ezorm.rdb.mapping.defaults.SaveResult;
+import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Optional;
  * @auther: lind
  * @since: 1.0
  */
+@SuppressWarnings("all")
 public interface SyncRepository<T, K> {
 
     T newInstance();
@@ -42,4 +44,11 @@ public interface SyncRepository<T, K> {
     SyncUpdate<T> createUpdate();
 
     SyncDelete createDelete();
+
+    /**
+     * 获取原始查询操作
+     *
+     * @return 原始查询操作
+     */
+    QueryOperator nativeQuery();
 }

@@ -7,6 +7,7 @@ import org.zucker.ezorm.rdb.mapping.SyncRepository;
 import org.zucker.ezorm.rdb.mapping.SyncUpdate;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.DatabaseOperator;
+import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -108,5 +109,10 @@ public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements
     @Override
     public SyncDelete createDelete() {
         return new DefaultSyncDelete(getTable(), operator.dml().delete(getTable().getFullName()));
+    }
+
+    @Override
+    public QueryOperator nativeQuery() {
+        return operator.dml().query(getTable());
     }
 }
