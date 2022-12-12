@@ -35,7 +35,7 @@ public abstract class R2dbcReactiveSqlExecutor implements ReactiveSqlExecutor {
 
     @Getter
     @Setter
-    private Logger logger;
+    private Logger logger = R2dbcReactiveSqlExecutor.log;
 
     protected abstract Mono<Connection> getConnection();
 
