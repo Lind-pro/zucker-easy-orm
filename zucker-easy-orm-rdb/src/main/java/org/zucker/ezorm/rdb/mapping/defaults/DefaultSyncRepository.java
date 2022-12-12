@@ -43,8 +43,9 @@ public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements
     }
 
     @Override
-    public Optional findById(Object primaryKey) {
-        return Optional.empty();
+    public Optional<E> findById(K primaryKey) {
+        return Optional.ofNullable(primaryKey)
+                .flatMap(k -> createQuery().where(getIdColumn(), k).fetchOne());
     }
 
     @Override
