@@ -64,6 +64,7 @@ public class DefaultSyncRepositoryTest {
                 DefaultDatabaseOperator.of(databaseMetadata), table, TestEntity.class, wrapper);
     }
 
+    @Test
     public void testInsertBatch() {
         List<TestEntity> list = Flux.range(0, 100)
                 .map(i -> {
