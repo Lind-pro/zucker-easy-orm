@@ -10,6 +10,7 @@ import org.zucker.ezorm.rdb.mapping.ReactiveRepository;
 import org.zucker.ezorm.rdb.mapping.ReactiveUpdate;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.DatabaseOperator;
+import org.zucker.ezorm.rdb.operator.dml.QueryOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +25,8 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     public DefaultReactiveRepository(DatabaseOperator operator, String table, Class<E> type, ResultWrapper<E, ?> wrapper) {
         this(operator,
-                () -> operator.getMetadata()
+                () -> operator
+                        .getMetadata()
                         .getTable(table)
                         .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist")), type, wrapper);
     }
@@ -40,12 +42,12 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     @Override
     public Mono<E> newInstance() {
-        return Mono.just(wrapper.newRowInstance());
+        return Mono.fromSupplier(wrapper::newRowInstance);
     }
 
     @Override
-    public Mono<E> findById(Mono<K> key) {
-        return key.flatMap(k -> createQuery().where(getIdColumn(), k).fetchOne());
+    public Mono<E> findById(Mono<K> primaryKey) {
+        return primaryKey.flatMap(k -> createQuery().where(getIdColumn(), k).fetchOne());
     }
 
     @Override
@@ -66,7 +68,8 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     @Override
     public Mono<SaveResult> save(Publisher<E> data) {
-        return Flux.from(data)
+        return Flux
+                .from(data)
                 .collectList()
                 .filter(CollectionUtils::isNotEmpty)
                 .flatMap(list -> doSave(list).reactive())
@@ -75,15 +78,17 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     @Override
     public Mono<Integer> updateById(K id, Mono<E> data) {
-        return data.flatMap(_data -> createUpdate()
-                .where(getIdColumn(), id)
-                .set(_data)
-                .execute());
+        return data
+                .flatMap(_data -> createUpdate()
+                        .where(getIdColumn(), id)
+                        .set(_data)
+                        .execute());
     }
 
     @Override
     public Mono<Integer> insert(Publisher<E> data) {
-        return Flux.from(data)
+        return Flux
+                .from(data)
                 .flatMap(e -> doInsert(e).reactive())
                 .reduce(Math::addExact)
                 .defaultIfEmpty(0);
@@ -91,7 +96,8 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     @Override
     public Mono<Integer> insertBatch(Publisher<? extends Collection<E>> data) {
-        return Flux.from(data)
+        return Flux
+                .from(data)
                 .filter(CollectionUtils::isNotEmpty)
                 .flatMap(e -> doInsert(e).reactive())
                 .reduce(Math::addExact)
@@ -100,7 +106,11 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
 
     @Override
     public ReactiveQuery<E> createQuery() {
-        return new DefaultReactiveQuery<>(getTable(), mapping, operator.dml(), wrapper, getDefaultContextKeyValue());
+        return new DefaultReactiveQuery<>(getTable(),
+                mapping,
+                operator.dml(),
+                wrapper,
+                getDefaultContextKeyValue());
     }
 
     @Override
@@ -119,5 +129,10 @@ public class DefaultReactiveRepository<E, K> extends DefaultRepository<E> implem
                 operator.dml().delete(getTable().getFullName()),
                 getDefaultContextKeyValue()
         );
+    }
+
+    @Override
+    public QueryOperator nativeQuery() {
+        return operator.dml().query(getTable());
     }
 }
