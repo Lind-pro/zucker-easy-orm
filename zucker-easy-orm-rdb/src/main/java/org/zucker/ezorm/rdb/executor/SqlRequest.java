@@ -1,5 +1,7 @@
 package org.zucker.ezorm.rdb.executor;
 
+import org.zucker.ezorm.rdb.utils.SqlUtils;
+
 /**
  * @auther: lind
  * @since: 1.0
@@ -13,5 +15,9 @@ public interface SqlRequest {
 
     default boolean isNotEmpty() {
         return !isEmpty();
+    }
+
+    default String toNativeSql() {
+        return SqlUtils.toNativeSql(getSql(), getParameters());
     }
 }
