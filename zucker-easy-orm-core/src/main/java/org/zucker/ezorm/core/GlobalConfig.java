@@ -1,8 +1,8 @@
 package org.zucker.ezorm.core;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class GlobalConfig {
     private static ObjectPropertyOperator propertyOperator;

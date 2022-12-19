@@ -21,8 +21,8 @@ import java.util.stream.Stream;
 /**
  * DQL 对象元数据：表或者视图
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMetadata {
 

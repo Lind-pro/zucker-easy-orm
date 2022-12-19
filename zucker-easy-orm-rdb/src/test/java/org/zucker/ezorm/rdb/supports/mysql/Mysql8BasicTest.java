@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 import org.zucker.ezorm.rdb.supports.BasicCommonTests;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class Mysql8BasicTest extends BasicCommonTests {
 

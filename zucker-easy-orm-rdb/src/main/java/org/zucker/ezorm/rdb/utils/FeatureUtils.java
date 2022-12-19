@@ -12,8 +12,8 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class FeatureUtils {
 

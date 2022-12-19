@@ -6,8 +6,8 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultSyncUpdate<E> extends DefaultUpdate<E, SyncUpdate<E>> implements SyncUpdate<E> {
     public DefaultSyncUpdate(RDBTableMetadata table, UpdateOperator operator, EntityColumnMapping mapping) {

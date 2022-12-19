@@ -36,8 +36,8 @@ import java.util.stream.Stream;
 import static org.zucker.ezorm.rdb.utils.AnnotationUtils.getAnnotations;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public class JpaEntityTableMetadataParserProcessor {

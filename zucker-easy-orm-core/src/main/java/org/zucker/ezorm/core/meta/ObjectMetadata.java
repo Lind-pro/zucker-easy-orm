@@ -2,8 +2,8 @@ package org.zucker.ezorm.core.meta;
 
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ObjectMetadata extends Cloneable {
 

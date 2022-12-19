@@ -20,8 +20,8 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @AllArgsConstructor

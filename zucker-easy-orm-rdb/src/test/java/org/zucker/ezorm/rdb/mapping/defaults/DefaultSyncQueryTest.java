@@ -17,8 +17,8 @@ import org.zucker.ezorm.rdb.supports.h2.H2SchemaMetadata;
 import java.util.Date;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultSyncQueryTest {
 

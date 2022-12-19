@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 import static java.util.Optional.of;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

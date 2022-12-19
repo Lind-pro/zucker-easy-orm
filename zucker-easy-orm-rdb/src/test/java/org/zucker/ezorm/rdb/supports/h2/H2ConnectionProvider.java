@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.util.Random;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class H2ConnectionProvider implements ConnectionProvider {
 

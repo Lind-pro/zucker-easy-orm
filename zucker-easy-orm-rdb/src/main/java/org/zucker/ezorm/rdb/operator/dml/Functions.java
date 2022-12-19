@@ -4,8 +4,8 @@ import org.zucker.ezorm.rdb.metadata.RDBFeatureType;
 import org.zucker.ezorm.rdb.metadata.RDBFeatures;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class Functions {
 

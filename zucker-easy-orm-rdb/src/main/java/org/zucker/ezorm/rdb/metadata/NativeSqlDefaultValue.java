@@ -7,8 +7,8 @@ import org.zucker.ezorm.core.DefaultValue;
 import org.zucker.ezorm.rdb.operator.builder.fragments.NativeSql;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

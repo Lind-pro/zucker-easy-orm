@@ -3,8 +3,8 @@ package org.zucker.ezorm.core;
 import org.zucker.ezorm.core.meta.Feature;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface FeatureId<T extends Feature> {
 

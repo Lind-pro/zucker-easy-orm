@@ -4,8 +4,8 @@ import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 import org.zucker.ezorm.rdb.operator.DatabaseOperator;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ContextKeys {
 

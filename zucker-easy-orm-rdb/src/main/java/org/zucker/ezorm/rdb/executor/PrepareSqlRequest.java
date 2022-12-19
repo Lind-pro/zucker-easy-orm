@@ -9,8 +9,8 @@ import org.zucker.ezorm.rdb.utils.SqlUtils;
 import java.util.Arrays;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

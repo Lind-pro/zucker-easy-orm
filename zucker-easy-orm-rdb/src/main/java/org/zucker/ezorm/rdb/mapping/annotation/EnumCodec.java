@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see org.zucker.ezorm.rdb.codec.EnumValueCodec
  */
 @Target({ElementType.FIELD, ElementType.METHOD})

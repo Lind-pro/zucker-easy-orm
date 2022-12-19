@@ -15,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 @AllArgsConstructor(staticName = "of")

@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.metadata.DataType;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultDataTypeResolver implements DataTypeResolver {
 

@@ -1,8 +1,8 @@
 package org.zucker.ezorm.rdb.mapping;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface SyncUpdate<E> extends DSLUpdate<E, SyncUpdate<E>> {
 

@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.mapping.annotation;
 import java.lang.annotation.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see Codec
  * @see org.zucker.ezorm.rdb.codec.JsonValueCodec
  */

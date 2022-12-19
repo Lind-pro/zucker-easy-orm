@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 import org.zucker.ezorm.rdb.operator.dml.query.QueryOperatorParameter;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface QuerySqlFragmentBuilder extends Feature {
 

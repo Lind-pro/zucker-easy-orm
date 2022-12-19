@@ -6,8 +6,8 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式动态查询接口
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ReactiveQuery<T> extends DSLQuery<ReactiveQuery<T>> {
 

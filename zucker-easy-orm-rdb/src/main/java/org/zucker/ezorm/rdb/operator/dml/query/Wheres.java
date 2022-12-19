@@ -6,8 +6,8 @@ import org.zucker.ezorm.core.param.Term;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface Wheres {
 

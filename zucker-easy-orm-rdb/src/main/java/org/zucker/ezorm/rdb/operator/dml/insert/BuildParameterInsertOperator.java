@@ -6,8 +6,8 @@ import org.zucker.ezorm.rdb.executor.SqlRequest;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class BuildParameterInsertOperator extends InsertOperator {
 

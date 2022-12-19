@@ -12,8 +12,8 @@ import java.sql.Blob;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public class BlobValueCodec implements ValueCodec<Object, Object> {

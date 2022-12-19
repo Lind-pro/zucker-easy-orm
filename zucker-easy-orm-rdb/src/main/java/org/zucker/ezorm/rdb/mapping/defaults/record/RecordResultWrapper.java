@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.mapping.EntityColumnMapping;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class RecordResultWrapper extends AbstractMapResultWrapper<Record> {
 

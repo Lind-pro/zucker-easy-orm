@@ -15,8 +15,8 @@ import java.util.Optional;
  * 数据库方言
  * @see DefaultDialect
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface Dialect extends Feature {
 

@@ -5,8 +5,8 @@ import lombok.Getter;
 import org.zucker.ezorm.core.meta.ObjectType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @AllArgsConstructor

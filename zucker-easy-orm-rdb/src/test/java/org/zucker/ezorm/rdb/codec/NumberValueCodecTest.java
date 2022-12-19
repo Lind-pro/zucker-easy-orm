@@ -10,8 +10,8 @@ import java.util.Date;
 import org.hswebframework.utils.time.DateFormatter;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class NumberValueCodecTest {
 

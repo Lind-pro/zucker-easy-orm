@@ -4,8 +4,8 @@ import org.zucker.ezorm.core.FeatureId;
 import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface AlterTableSqlBuilder extends SqlBuilder<AlterRequest> {
 

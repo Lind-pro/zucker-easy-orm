@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.metadata.RDBFeatures;
 import java.util.Collections;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface Selects {
 

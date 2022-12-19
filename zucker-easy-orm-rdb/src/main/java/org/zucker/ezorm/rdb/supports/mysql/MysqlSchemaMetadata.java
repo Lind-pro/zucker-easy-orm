@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.supports.mysql;
 import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class MysqlSchemaMetadata extends RDBSchemaMetadata {
 

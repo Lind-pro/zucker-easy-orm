@@ -12,8 +12,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class SimpleColumnMapping implements EntityColumnMapping {

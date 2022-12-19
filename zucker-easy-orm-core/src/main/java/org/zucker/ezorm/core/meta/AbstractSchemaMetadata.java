@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 import static java.util.stream.Collectors.toMap;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public abstract class AbstractSchemaMetadata implements SchemaMetadata {

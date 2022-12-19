@@ -9,8 +9,8 @@ import org.zucker.ezorm.rdb.operator.ExceptionTranslation;
 import java.util.Collections;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class H2R2DBCExceptionTranslation implements ExceptionTranslation {

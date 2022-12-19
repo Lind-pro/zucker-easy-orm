@@ -13,8 +13,8 @@ import reactor.core.publisher.Mono;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 class DefaultQueryResultOperator<E, R> implements QueryResultOperator<E, R> {
 

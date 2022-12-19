@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.mapping.defaults.record;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultRecord extends LinkedHashMap<String, Object> implements Record {
 

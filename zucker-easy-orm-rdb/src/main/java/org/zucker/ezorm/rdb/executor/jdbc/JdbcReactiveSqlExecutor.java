@@ -15,8 +15,8 @@ import java.sql.Connection;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public abstract class JdbcReactiveSqlExecutor extends JdbcSqlExecutor implements ReactiveSqlExecutor {

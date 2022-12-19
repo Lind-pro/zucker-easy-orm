@@ -4,8 +4,8 @@ import org.zucker.ezorm.rdb.metadata.RDBIndexMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class IndexBuilder {
 

@@ -6,8 +6,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class NullTermFragmentBuilder extends AbstractTermFragmentBuilder {
 

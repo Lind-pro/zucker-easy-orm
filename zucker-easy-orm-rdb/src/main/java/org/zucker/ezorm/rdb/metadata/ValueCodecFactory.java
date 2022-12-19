@@ -8,8 +8,8 @@ import org.zucker.ezorm.core.meta.Feature;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ValueCodecFactory extends Feature {
 

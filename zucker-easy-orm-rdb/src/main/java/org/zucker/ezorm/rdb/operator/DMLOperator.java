@@ -12,8 +12,8 @@ import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator;
 import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface DMLOperator {
 

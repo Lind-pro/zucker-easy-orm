@@ -10,8 +10,8 @@ import java.util.function.Function;
 /**
  * 查询条件构造器，用于构造{@link org.zucker.ezorm.core.param.QueryParam} 以及设置执行器进行执行
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public final class Query<T, Q extends QueryParam> implements Conditional<Query<T, Q>> {
     private Q param;

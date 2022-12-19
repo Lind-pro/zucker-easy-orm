@@ -7,8 +7,8 @@ import java.lang.annotation.*;
 import java.sql.JDBCType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

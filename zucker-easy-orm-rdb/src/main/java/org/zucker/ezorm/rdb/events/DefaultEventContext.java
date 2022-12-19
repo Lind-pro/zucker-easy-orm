@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultEventContext extends HashMap<String, Object> implements EventContext {
 

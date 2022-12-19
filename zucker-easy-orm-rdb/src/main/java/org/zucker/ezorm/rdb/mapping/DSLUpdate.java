@@ -8,8 +8,8 @@ import org.zucker.ezorm.core.param.QueryParam;
 import java.util.Arrays;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public interface DSLUpdate<E, ME extends DSLUpdate> extends Conditional<ME> {

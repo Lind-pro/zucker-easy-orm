@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public class DefaultUpsertOperator extends UpsertOperator {

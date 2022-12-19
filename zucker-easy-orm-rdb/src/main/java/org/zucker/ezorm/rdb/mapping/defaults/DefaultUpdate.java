@@ -23,8 +23,8 @@ import java.sql.JDBCType;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public class DefaultUpdate<E, ME extends DSLUpdate<?, ?>> implements DSLUpdate<E, ME> {

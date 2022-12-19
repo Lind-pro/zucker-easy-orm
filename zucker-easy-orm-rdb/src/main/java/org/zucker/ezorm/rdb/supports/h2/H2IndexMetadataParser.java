@@ -19,8 +19,8 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 @Slf4j

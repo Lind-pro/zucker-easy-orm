@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.executor.wrapper;
 import java.util.function.Function;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class ConvertResultWrapper<T, R, C> implements ResultWrapper<T, C> {
 

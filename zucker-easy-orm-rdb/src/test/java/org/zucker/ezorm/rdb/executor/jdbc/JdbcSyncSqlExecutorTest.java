@@ -15,8 +15,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class JdbcSyncSqlExecutorTest {
 

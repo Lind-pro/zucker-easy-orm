@@ -7,8 +7,8 @@ import org.zucker.ezorm.core.RuntimeDefaultValue;
 import org.zucker.ezorm.core.meta.ObjectMetadata;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class FixedDefaultValueGenerator<M extends ObjectMetadata> implements DefaultValueGenerator<M> {
 

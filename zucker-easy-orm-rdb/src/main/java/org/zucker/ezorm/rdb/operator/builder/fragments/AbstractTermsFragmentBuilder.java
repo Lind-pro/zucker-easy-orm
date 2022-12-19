@@ -19,8 +19,8 @@ import java.util.List;
  * }</pre>
  *
  * @param <T> 参数类型
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public abstract class AbstractTermsFragmentBuilder<T> {

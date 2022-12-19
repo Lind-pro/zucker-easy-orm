@@ -11,8 +11,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface EntityPropertyDescriptor extends Feature {
 

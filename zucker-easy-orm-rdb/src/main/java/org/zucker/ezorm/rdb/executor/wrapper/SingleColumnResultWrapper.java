@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.executor.wrapper;
 import org.zucker.ezorm.core.Decoder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class SingleColumnResultWrapper<R> implements ResultWrapper<R, R> {
 

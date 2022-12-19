@@ -8,8 +8,8 @@ import java.sql.SQLType;
 import java.util.function.Function;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface DataType {
 

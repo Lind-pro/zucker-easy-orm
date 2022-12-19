@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public abstract class LazyEntityColumnMapping implements EntityColumnMapping {
 

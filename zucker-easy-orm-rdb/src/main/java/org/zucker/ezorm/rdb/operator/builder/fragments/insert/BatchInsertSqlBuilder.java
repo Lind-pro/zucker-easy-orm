@@ -17,8 +17,8 @@ import org.zucker.ezorm.rdb.operator.dml.insert.InsertOperatorParameter;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 @SuppressWarnings("all")

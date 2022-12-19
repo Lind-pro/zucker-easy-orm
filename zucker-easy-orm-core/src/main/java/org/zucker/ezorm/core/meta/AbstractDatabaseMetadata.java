@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public abstract class AbstractDatabaseMetadata<S extends SchemaMetadata> implements DatabaseMetadata<S>, FeatureSupportedMetadata {
 

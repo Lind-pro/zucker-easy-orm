@@ -24,8 +24,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public class MysqlBatchUpsertOperator implements SaveOrUpdateOperator {

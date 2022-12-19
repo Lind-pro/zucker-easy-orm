@@ -10,8 +10,8 @@ import org.zucker.ezorm.rdb.metadata.RDBFeatureType;
 /**
  * SQL 条件片段构造器
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface TermFragmentBuilder extends Feature {
 

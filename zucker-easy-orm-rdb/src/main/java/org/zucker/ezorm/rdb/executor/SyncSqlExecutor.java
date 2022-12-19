@@ -13,8 +13,8 @@ import java.util.Map;
 /**
  * 同步SQL执行器,用于执行SQL,并同步获取执行结果
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface SyncSqlExecutor extends Feature {
 

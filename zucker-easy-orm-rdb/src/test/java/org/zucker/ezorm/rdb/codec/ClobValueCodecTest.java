@@ -6,8 +6,8 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class ClobValueCodecTest {
 

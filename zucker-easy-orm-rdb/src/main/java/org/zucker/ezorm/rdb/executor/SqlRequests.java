@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class SqlRequests {

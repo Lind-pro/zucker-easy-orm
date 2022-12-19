@@ -27,8 +27,8 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public abstract class R2dbcReactiveSqlExecutor implements ReactiveSqlExecutor {

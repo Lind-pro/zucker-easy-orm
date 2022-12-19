@@ -8,8 +8,8 @@ import reactor.core.publisher.Mono;
 import java.sql.Connection;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 public class TestJdbcReactiveSqlExecutor extends JdbcReactiveSqlExecutor {

@@ -13,8 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EmptySqlFragments implements SqlFragments {

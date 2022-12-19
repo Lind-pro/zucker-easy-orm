@@ -35,8 +35,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public abstract class BasicCommonTests {

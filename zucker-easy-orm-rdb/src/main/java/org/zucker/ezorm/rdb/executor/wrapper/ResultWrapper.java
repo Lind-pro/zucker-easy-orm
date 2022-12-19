@@ -5,8 +5,8 @@ package org.zucker.ezorm.rdb.executor.wrapper;
  *
  * @param <E> 结果集元素
  * @param <R> 最终返回结果
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see ResultWrappers
  */
 public interface ResultWrapper<E, R> {

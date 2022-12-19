@@ -10,8 +10,8 @@ import org.zucker.ezorm.core.meta.ObjectMetadata;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class lazyDefaultValueGenerator<T extends ObjectMetadata> implements DefaultValueGenerator<T> {

@@ -5,8 +5,8 @@ import reactor.core.publisher.Mono;
 import java.util.function.BiFunction;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ReactiveDelete extends DSLDelete<ReactiveDelete> {
 

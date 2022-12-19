@@ -17,8 +17,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultValueCodecFactory implements ValueCodecFactory {
 

@@ -18,8 +18,8 @@ import java.util.function.Function;
  * {@link LogicalOperation#when(String, Object, Function, Function}<br>
  * {@link LogicalOperation#each}
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface LogicalOperation<T extends LogicalOperation> extends TermTypeConditionalSuppport {
 

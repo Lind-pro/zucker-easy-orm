@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor
 public class DefaultBatchSqlRequest extends PrepareSqlRequest implements BatchSqlRequest {

@@ -18,8 +18,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class SelectColumnFragmentBuilder implements QuerySqlFragmentBuilder {

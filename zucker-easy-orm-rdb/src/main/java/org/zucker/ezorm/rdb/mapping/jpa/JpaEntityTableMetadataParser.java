@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see javax.persistence.Column
  * @see javax.persistence.JoinTable
  * @see javax.persistence.JoinColumn

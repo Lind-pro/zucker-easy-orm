@@ -7,8 +7,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public class TestReactiveSqlExecutor extends R2dbcReactiveSqlExecutor {

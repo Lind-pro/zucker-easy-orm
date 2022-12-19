@@ -6,8 +6,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.query.QuerySqlFragmentBui
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface RDBFeatures {
 

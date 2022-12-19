@@ -8,8 +8,8 @@ import org.zucker.ezorm.rdb.metadata.dialect.DefaultDialect;
 import java.sql.JDBCType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class H2Dialect extends DefaultDialect {
 

@@ -4,8 +4,8 @@ import org.zucker.ezorm.rdb.operator.dml.Join;
 import org.zucker.ezorm.rdb.operator.dml.JoinType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface Joins {
     static JoinOperator left(String target) {

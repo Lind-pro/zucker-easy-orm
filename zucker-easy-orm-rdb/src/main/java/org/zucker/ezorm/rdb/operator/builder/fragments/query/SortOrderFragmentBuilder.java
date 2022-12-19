@@ -13,8 +13,8 @@ import org.zucker.ezorm.rdb.operator.dml.query.SortOrder;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class SortOrderFragmentBuilder implements QuerySqlFragmentBuilder {

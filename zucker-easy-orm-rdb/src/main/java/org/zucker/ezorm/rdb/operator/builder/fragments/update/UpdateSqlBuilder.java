@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
 import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperatorParameter;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface UpdateSqlBuilder extends SqlBuilder<UpdateOperatorParameter> {
 

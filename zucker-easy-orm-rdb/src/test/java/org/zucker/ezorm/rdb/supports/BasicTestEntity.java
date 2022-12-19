@@ -13,8 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Table(name = "entity_test_table", indexes = @Index(name = "test_index", columnList = "name,state desc"))
 @Data

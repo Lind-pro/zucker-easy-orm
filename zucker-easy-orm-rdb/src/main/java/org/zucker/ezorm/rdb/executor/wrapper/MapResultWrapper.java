@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public class MapResultWrapper extends AbstractMapResultWrapper<Map<String, Object>> {

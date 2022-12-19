@@ -6,8 +6,8 @@ import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
 import reactor.core.publisher.Mono;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface QuerySqlBuilder extends SqlBuilder<QueryOperatorParameter> {
 

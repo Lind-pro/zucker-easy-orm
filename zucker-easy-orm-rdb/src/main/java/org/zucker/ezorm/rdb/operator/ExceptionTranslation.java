@@ -6,8 +6,8 @@ import org.zucker.ezorm.core.meta.Feature;
 import org.zucker.ezorm.rdb.metadata.RDBFeatureType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ExceptionTranslation extends Feature {
 

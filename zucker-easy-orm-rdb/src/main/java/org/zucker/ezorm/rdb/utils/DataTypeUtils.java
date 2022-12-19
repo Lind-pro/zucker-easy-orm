@@ -12,8 +12,8 @@ import java.time.LocalTime;
 import java.util.Date;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DataTypeUtils {
 

@@ -13,8 +13,8 @@ import java.util.Collection;
  *
  * @param <T> 实体类型
  * @param <K> 主键类型
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ReactiveRepository<T, K> {
 

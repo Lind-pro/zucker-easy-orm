@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface DatabaseMetadata<S extends SchemaMetadata> extends ObjectMetadata, FeatureSupportedMetadata {
 

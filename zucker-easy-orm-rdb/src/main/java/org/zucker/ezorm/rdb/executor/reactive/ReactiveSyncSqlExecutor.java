@@ -10,8 +10,8 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class ReactiveSyncSqlExecutor implements SyncSqlExecutor {

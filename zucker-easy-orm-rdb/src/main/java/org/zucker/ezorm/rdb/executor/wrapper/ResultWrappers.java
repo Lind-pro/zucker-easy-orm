@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 /**
  * 通用查询结果包装器大全
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public abstract class ResultWrappers {

@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class CommonDropIndexSqlBuilder implements DropIndexSqlBuilder {
 

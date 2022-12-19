@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.executor.wrapper;
 import lombok.AllArgsConstructor;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class LowerCaseColumnResultWrapper<E, R> implements ResultWrapper<E, R> {

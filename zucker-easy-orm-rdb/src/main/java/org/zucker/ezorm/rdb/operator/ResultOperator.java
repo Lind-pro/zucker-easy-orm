@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.operator;
 import org.reactivestreams.Publisher;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ResultOperator<E, R> {
 

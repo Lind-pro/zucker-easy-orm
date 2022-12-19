@@ -11,8 +11,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 import java.util.List;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ForeignKeyTermFragmentBuilder extends Feature {
 

@@ -7,8 +7,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see org.zucker.ezorm.core.DefaultValueGenerator
  */
 

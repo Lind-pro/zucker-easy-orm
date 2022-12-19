@@ -6,8 +6,8 @@ import lombok.Getter;
 import java.sql.SQLType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class JdbcDataType implements DataType{

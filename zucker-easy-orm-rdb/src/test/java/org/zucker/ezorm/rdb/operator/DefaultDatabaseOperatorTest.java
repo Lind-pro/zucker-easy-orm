@@ -20,8 +20,8 @@ import org.zucker.ezorm.rdb.supports.h2.H2TableMetadataParser;
 import java.io.Serializable;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultDatabaseOperatorTest {
 
@@ -78,6 +78,56 @@ public class DefaultDatabaseOperatorTest {
         Assert.assertEquals(sum, 1);
     }
 
+    @Test
+    public void testDropColumn() {
+        operator.ddl()
+                .createOrAlter("test_ddl_drop")
+                .addColumn().name("id").varchar(32).primaryKey().comment("ID").commit()
+                .addColumn().name("name").varchar(64).notNull().comment("名称").commit()
+                .addColumn().name("comment").columnDef("varchar(32) not null default '1'").commit()
+                .commit()
+                .sync();
+
+        operator.ddl()
+                .createOrAlter("test_ddl_drop")
+                .dropColumn("comment")
+                .commit()
+                .sync();
+
+        Assert.assertFalse(
+                operator.getMetadata()
+                        .getTable("test_ddl_drop")
+                        .flatMap(table -> table.getColumn("comment"))
+                        .isPresent()
+        );
+    }
+
+    @Test
+    public void testDropColumnReactive() {
+        operator.ddl()
+                .createOrAlter("test_ddl_drop")
+                .addColumn().name("id").varchar(32).primaryKey().comment("ID").commit()
+                .addColumn().name("name").varchar(64).notNull().comment("名称").commit()
+                .addColumn().name("comment").columnDef("varchar(32) not null default '1'").commit()
+                .commit()
+                .reactive()
+                .block();
+
+        operator.ddl()
+                .createOrAlter("test_ddl_drop")
+                .dropColumn("comment")
+                .commit()
+                .reactive()
+                .block();
+
+        Assert.assertFalse(
+                operator.getMetadata()
+                        .getTable("test_ddl_drop")
+                        .flatMap(table -> table.getColumn("comment"))
+                        .isPresent()
+        );
+    }
+
     @Getter
     @Setter
     @AllArgsConstructor(staticName = "of")
@@ -86,5 +136,11 @@ public class DefaultDatabaseOperatorTest {
         private String id;
         private String name;
         private int status;
+    }
+
+    @Test
+    public void testDmlCrud(){
+//        operator.sql()
+//                .sync()
     }
 }

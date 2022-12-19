@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.executor.wrapper.ResultWrapper;
 import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class ExecutableQueryOperator extends BuildParameterQueryOperator {
 

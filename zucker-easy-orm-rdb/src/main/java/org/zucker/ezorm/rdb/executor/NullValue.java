@@ -6,8 +6,8 @@ import lombok.NonNull;
 import org.zucker.ezorm.rdb.metadata.DataType;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @AllArgsConstructor(staticName = "of")

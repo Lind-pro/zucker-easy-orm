@@ -8,8 +8,8 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class CommonCreateIndexSqlBuilder implements CreateIndexSqlBuilder {
 

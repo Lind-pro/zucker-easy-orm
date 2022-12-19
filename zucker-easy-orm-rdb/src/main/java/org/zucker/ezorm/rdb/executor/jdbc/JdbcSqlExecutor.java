@@ -15,8 +15,8 @@ import static org.zucker.ezorm.rdb.utils.SqlUtils.printSql;
 import static org.zucker.ezorm.rdb.executor.jdbc.JdbcSqlExecutorHelper.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 public abstract class JdbcSqlExecutor {

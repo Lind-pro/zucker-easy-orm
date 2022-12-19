@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class ConsumerResultWrapper<T> implements ResultWrapper<T, Integer> {
 

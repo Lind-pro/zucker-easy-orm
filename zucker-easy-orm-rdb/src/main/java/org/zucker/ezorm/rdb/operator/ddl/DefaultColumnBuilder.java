@@ -9,8 +9,8 @@ import org.zucker.ezorm.rdb.metadata.ValueCodecFactory;
 import java.util.function.Consumer;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultColumnBuilder implements ColumnBuilder {
 

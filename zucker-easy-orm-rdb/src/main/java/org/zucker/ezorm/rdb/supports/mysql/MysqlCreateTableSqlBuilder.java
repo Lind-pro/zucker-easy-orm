@@ -15,8 +15,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CreateIndexSqlBuilder
 import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CreateTableSqlBuilder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

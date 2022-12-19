@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface CreateTableSqlBuilder extends SqlBuilder<RDBTableMetadata> {
 

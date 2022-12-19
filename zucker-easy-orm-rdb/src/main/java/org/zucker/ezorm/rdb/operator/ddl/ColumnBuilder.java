@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.function.Consumer;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface ColumnBuilder {
 

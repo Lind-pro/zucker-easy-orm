@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.metadata.RDBFeatureType;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface Paginator extends Feature {
 

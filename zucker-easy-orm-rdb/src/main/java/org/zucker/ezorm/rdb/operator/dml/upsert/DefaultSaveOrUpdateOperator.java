@@ -28,8 +28,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultSaveOrUpdateOperator implements SaveOrUpdateOperator {
 

@@ -16,8 +16,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor
 public class DateTimeCodec implements ValueCodec {

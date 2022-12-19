@@ -8,8 +8,8 @@ import java.util.function.BiFunction;
  * 响应式DSL更新接口
  *
  * @param <E> 实体类型
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator
  */
 public interface ReactiveUpdate<E> extends DSLUpdate<E, ReactiveUpdate<E>> {

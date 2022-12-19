@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.ddl.CommonAlterTableSqlBuilder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class H2AlterTableSqlBuilder extends CommonAlterTableSqlBuilder {
 

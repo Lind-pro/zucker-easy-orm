@@ -6,8 +6,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Slf4j
 public class PropertiesUtils {

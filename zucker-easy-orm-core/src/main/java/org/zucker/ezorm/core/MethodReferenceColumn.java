@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface MethodReferenceColumn<T> extends Supplier<T>, Serializable {
 

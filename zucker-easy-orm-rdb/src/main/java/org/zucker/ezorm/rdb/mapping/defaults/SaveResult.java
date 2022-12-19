@@ -7,8 +7,8 @@ import lombok.Setter;
 /**
  * upsert保存结果
  * 注意: added 和 updated 的值并不一定准确,因为有的数据库执行upsert,无法准确获取新增和修改的结果.
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

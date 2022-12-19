@@ -3,8 +3,8 @@ package org.zucker.ezorm.core;
 import org.zucker.ezorm.core.param.Term;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface TermTypeConditionalSuppport {
 

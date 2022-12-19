@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultQuery<T, ME extends DSLQuery<?>> implements DSLQuery<ME> {
 

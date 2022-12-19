@@ -7,8 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @NoArgsConstructor(staticName = "of")
 public class BlockSqlFragments implements SqlFragments {

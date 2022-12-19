@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.operator.dml;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class FunctionColumnOperator implements Supplier<FunctionColumn> {
 

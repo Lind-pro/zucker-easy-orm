@@ -20,8 +20,8 @@ import static org.zucker.ezorm.rdb.operator.dml.query.SortOrder.asc;
 import static org.zucker.ezorm.rdb.operator.dml.query.SortOrder.desc;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class BuildParameterQueryOperator extends QueryOperator {
 

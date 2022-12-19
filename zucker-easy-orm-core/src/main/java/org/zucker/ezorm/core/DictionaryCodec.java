@@ -11,8 +11,8 @@ import java.util.Collection;
  * 在修改或者插入时，验证器会首先通过{@link DictionaryCodec#encode(Object)}来获取一个结果。
  * 如果返回null,则调用{@link DictionaryCodec#decode(Object)},并将值放入数据库，
  * 如果继续返回null，则会抛出验证器异常，提示值不再选项范围中。
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface DictionaryCodec {
 

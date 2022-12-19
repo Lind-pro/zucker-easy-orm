@@ -3,8 +3,8 @@ package org.zucker.ezorm.rdb.events;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface EventContext {
 

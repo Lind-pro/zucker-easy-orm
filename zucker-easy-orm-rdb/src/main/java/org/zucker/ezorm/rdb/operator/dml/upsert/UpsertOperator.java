@@ -10,8 +10,8 @@ import java.util.Map;
 /**
  * upsert操作器,用于执行upsert请求
  *
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public abstract class UpsertOperator {
 

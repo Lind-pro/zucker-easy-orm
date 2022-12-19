@@ -7,8 +7,8 @@ import org.zucker.ezorm.rdb.executor.jdbc.JdbcSyncSqlExecutor;
 import java.sql.Connection;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 public class TestSyncSqlExecutor extends JdbcSyncSqlExecutor {

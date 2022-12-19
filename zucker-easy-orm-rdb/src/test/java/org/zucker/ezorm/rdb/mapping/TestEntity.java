@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono;
 import java.util.function.BiFunction;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultReactiveDelete extends DefaultDelete<ReactiveDelete> implements ReactiveDelete {
 

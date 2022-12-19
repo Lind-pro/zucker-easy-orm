@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import java.util.Collection;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 public class ListResultWrapper<T, C extends Collection<T>> implements ResultWrapper<T, C> {

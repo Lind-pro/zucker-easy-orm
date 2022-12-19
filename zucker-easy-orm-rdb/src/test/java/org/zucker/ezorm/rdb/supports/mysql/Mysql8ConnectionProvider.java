@@ -12,8 +12,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**TestSyncSqlExecutor
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class Mysql8ConnectionProvider implements ConnectionProvider {
 

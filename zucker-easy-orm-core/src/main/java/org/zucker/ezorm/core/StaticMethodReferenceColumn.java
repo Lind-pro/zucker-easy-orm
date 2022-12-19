@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.function.Function;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  *
  * 使用静态方法引用来定义列名，如
  * <pre>

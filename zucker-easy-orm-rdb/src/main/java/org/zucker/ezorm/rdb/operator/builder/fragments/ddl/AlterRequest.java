@@ -4,8 +4,8 @@ import lombok.*;
 import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

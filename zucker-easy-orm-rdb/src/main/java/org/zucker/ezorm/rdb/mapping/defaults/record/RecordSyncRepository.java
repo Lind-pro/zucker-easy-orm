@@ -10,8 +10,8 @@ import org.zucker.ezorm.rdb.operator.DatabaseOperator;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class RecordSyncRepository<K> extends DefaultSyncRepository<Record, K> {
     public RecordSyncRepository(DatabaseOperator operator, String table) {

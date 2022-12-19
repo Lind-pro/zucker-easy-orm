@@ -11,8 +11,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public interface Conditional<T extends Conditional> extends LogicalOperation<T>, TermTypeConditionalSuppport {

@@ -5,8 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class TermTest {
 

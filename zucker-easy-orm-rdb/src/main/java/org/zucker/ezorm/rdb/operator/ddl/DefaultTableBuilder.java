@@ -19,8 +19,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultTableBuilder implements TableBuilder {
 

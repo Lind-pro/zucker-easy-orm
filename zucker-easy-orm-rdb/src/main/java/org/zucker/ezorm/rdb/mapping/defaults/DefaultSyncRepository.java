@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultSyncRepository<E, K> extends DefaultRepository<E> implements SyncRepository<E, K> {
     public DefaultSyncRepository(DatabaseOperator operator, String table, Class<E> type, ResultWrapper<E, ?> wrapper) {

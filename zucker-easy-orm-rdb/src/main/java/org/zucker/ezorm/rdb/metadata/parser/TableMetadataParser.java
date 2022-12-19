@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface TableMetadataParser extends ObjectMetadataParser {
 

@@ -10,8 +10,8 @@ import java.io.NotSerializableException;
 import java.nio.ByteBuffer;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class BlobValueCodecTest {
 

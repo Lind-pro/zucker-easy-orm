@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 @SuppressWarnings("all")

@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface FeatureSupportedMetadata {
 

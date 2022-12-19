@@ -24,8 +24,8 @@ import static org.zucker.ezorm.rdb.executor.SqlRequests.template;
 import static org.zucker.ezorm.rdb.executor.wrapper.ResultWrappers.*;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public abstract class RDBTableMetadataParser implements TableMetadataParser {
 

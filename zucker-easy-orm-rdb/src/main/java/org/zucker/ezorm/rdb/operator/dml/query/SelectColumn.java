@@ -6,8 +6,8 @@ import lombok.Setter;
 import org.zucker.ezorm.rdb.operator.dml.FunctionColumn;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

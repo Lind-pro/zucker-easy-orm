@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @Getter
 @Setter

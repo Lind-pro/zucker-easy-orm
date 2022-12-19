@@ -6,8 +6,8 @@ import org.zucker.ezorm.core.PropertyWrapper;
 import org.zucker.ezorm.core.ValueCodec;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @SuppressWarnings("all")
 public interface ColumnMetadata extends FeatureSupportedMetadata, ObjectMetadata, Cloneable {

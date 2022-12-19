@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor
 public abstract class AbstractTermFragmentBuilder implements TermFragmentBuilder {

@@ -21,8 +21,8 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultReactiveQuery<T> extends DefaultQuery<T, ReactiveQuery<T>> implements ReactiveQuery<T> {
 

@@ -18,8 +18,8 @@ import java.util.Optional;
 import static org.zucker.ezorm.rdb.operator.dml.query.Selects.count1;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class DefaultSyncQuery<T> extends DefaultQuery<T, SyncQuery<T>> implements SyncQuery<T> {
 

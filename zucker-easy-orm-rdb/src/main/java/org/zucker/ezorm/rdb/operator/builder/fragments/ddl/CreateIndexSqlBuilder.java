@@ -5,8 +5,8 @@ import org.zucker.ezorm.rdb.executor.CreateIndexParameter;
 import org.zucker.ezorm.rdb.operator.builder.SqlBuilder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public interface CreateIndexSqlBuilder extends SqlBuilder<CreateIndexParameter> {
 

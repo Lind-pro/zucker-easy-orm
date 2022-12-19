@@ -4,8 +4,8 @@ import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.term.EnumInFragmentBuilder;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 class MysqlEnumInFragmentBuilder extends EnumInFragmentBuilder {
 

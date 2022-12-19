@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class DefaultQuerySqlBuilder implements QuerySqlBuilder {

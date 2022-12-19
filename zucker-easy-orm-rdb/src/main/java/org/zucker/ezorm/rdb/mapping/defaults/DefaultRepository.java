@@ -30,8 +30,8 @@ import static org.zucker.ezorm.rdb.mapping.events.MappingContextKeys.*;
 
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public abstract class DefaultRepository<E> {
 

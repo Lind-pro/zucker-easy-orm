@@ -8,8 +8,8 @@ import javax.lang.model.type.ErrorType;
 import java.util.LinkedList;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 public class CompositeValueCodec implements ValueCodec<Object, Object> {
 

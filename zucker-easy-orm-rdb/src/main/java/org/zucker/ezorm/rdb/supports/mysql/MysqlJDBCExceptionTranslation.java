@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 /**
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
 public class MysqlJDBCExceptionTranslation implements ExceptionTranslation {

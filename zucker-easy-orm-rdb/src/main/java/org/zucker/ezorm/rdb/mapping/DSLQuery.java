@@ -11,8 +11,8 @@ import org.zucker.ezorm.rdb.operator.dml.query.SortOrder;
  * 动态DSL查询接口，用于通过DSL方式狗仔动态查询条件
  *
  * @param <ME> 实现次接口的类型
- * @auther: lind
- * @since: 1.0
+ * @author lind
+ * @since 1.0
  * @see QueryParam
  */
 @SuppressWarnings("all")
