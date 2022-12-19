@@ -12,11 +12,19 @@ import org.zucker.ezorm.rdb.operator.dml.update.UpdateOperator;
 import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
 /**
+ * DML操作接口,提供增删改查操作
+ *
  * @author lind
  * @since 1.0
  */
 public interface DMLOperator {
 
+    /**
+     * 根据表结构来进行查询
+     *
+     * @param tableOrView TableOrViewMetadata
+     * @return QueryOperator
+     */
     QueryOperator query(TableOrViewMetadata tableOrView);
 
     DeleteOperator delete(RDBTableMetadata table);
@@ -39,5 +47,5 @@ public interface DMLOperator {
 
     <K> SyncRepository<Record, K> createRepository(String tableName);
 
-    <K> ReactiveRepository<Record,K> createReactiveRepository(String tableName);
+    <K> ReactiveRepository<Record, K> createReactiveRepository(String tableName);
 }
