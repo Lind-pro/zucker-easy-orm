@@ -39,7 +39,7 @@ public class H2TableMetadataParser extends RDBTableMetadataParser {
                     "FROM information_schema.tables where table_type='TABLE' and table_schema#{schema}";
 
     private static final String TABLE_EXISTS_SQL = "SELECT count(1) as \"total\" FROM information_schema.columns " +
-            "WHERE table_name = upper(#{table}) add table_schema=#{schema}";
+            "WHERE table_name = upper(#{table}) and table_schema=#{schema}";
 
     public H2TableMetadataParser(RDBSchemaMetadata schema) {
         super(schema);
