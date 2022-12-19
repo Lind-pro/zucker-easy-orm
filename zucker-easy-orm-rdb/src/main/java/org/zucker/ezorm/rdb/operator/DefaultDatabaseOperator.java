@@ -1,6 +1,8 @@
 package org.zucker.ezorm.rdb.operator;
 
 import lombok.AllArgsConstructor;
+import org.zucker.ezorm.rdb.executor.SyncSqlExecutor;
+import org.zucker.ezorm.rdb.executor.reactive.ReactiveSqlExecutor;
 import org.zucker.ezorm.rdb.mapping.ReactiveRepository;
 import org.zucker.ezorm.rdb.mapping.SyncRepository;
 import org.zucker.ezorm.rdb.mapping.defaults.record.Record;
@@ -25,7 +27,13 @@ import org.zucker.ezorm.rdb.operator.dml.upsert.DefaultUpsertOperator;
 import org.zucker.ezorm.rdb.operator.dml.upsert.UpsertOperator;
 
 /**
+ * 默认的数据库操作实现
+ *
  * @author lind
+ * @see DatabaseOperator
+ * @see DMLOperator
+ * @see SQLOperator
+ * @see DDLOperator
  * @since 1.0
  */
 @AllArgsConstructor(staticName = "of")
@@ -33,26 +41,24 @@ public class DefaultDatabaseOperator implements DatabaseOperator, DMLOperator, S
 
     private final RDBDatabaseMetadata metadata;
 
-
     @Override
-    public TableBuilder createOrAlter(String name) {
-        RDBSchemaMetadata schema;
-        String tableName = name;
-        if (name.contains(".")) {
-            String[] arr = name.split("[.]");
-            tableName = arr[1];
-            schema = metadata
-                    .getSchema(arr[0])
-                    .orElseThrow(() -> new UnsupportedOperationException("schema [" + arr[0] + "] doesn't exist"));
-        } else {
-            schema = metadata.getCurrentSchema();
-        }
-        return new LazyTableBuilder(schema, tableName);
+    public RDBDatabaseMetadata getMetadata() {
+        return metadata;
     }
 
     @Override
-    public TableBuilder createOrAlter(RDBTableMetadata newTable) {
-        return new DefaultTableBuilder(newTable);
+    public DMLOperator dml() {
+        return this;
+    }
+
+    @Override
+    public DDLOperator ddl() {
+        return this;
+    }
+
+    @Override
+    public SQLOperator sql() {
+        return this;
     }
 
     @Override
@@ -81,45 +87,83 @@ public class DefaultDatabaseOperator implements DatabaseOperator, DMLOperator, S
     }
 
     @Override
+    public DeleteOperator delete(String table) {
+        return ExecutableDeleteOperator
+                .of(metadata
+                        .getTable(table)
+                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
+                );
+    }
+
+    @Override
+    public UpsertOperator upsert(String table) {
+        return DefaultUpsertOperator
+                .of(metadata
+                        .getTable(table)
+                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
+                );
+    }
+
+    @Override
     public QueryOperator query(String tableOrView) {
-        return new ExecutableQueryOperator(
-                metadata.getTableOrView(tableOrView)
-                        .orElseThrow(() -> new UnsupportedOperationException("table or view[" + tableOrView + "] doesn't exist"))
+        return new ExecutableQueryOperator(metadata
+                .getTableOrView(tableOrView)
+                .orElseThrow(() -> new UnsupportedOperationException("table or view[" + tableOrView + "] doesn't exist"))
         );
     }
 
     @Override
     public UpdateOperator update(String table) {
-        return
-                ExecutableUpdateOperator.of(metadata
-                        .getTable(table)
-                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist")));
+        return ExecutableUpdateOperator.of(metadata
+                .getTable(table)
+                .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist")));
     }
 
     @Override
     public InsertOperator insert(String table) {
-        return
-                ExecutableInsertOperator.of(
-                        metadata.getTable(table)
-                                .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
-                );
-    }
-
-    @Override
-    public DeleteOperator delete(String table) {
-        return ExecutableDeleteOperator.of(
+        return ExecutableInsertOperator.of(
                 metadata.getTable(table)
                         .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
         );
     }
 
     @Override
-    public UpsertOperator upsert(String table) {
-        return DefaultUpsertOperator.of(
-                metadata.getTable(table)
-                        .orElseThrow(() -> new UnsupportedOperationException("table [" + table + "] doesn't exist"))
-        );
+    public SyncSqlExecutor sync() {
+        return metadata
+                .getFeature(SyncSqlExecutor.ID)
+                .orElseThrow(() -> new UnsupportedOperationException("unsupported SyncSqlExecutor"));
     }
+
+    @Override
+    public ReactiveSqlExecutor reactive() {
+        return metadata
+                .getFeature(ReactiveSqlExecutor.ID)
+                .orElseThrow(() -> new UnsupportedOperationException("unsupported ReactiveSqlExecutor"));
+    }
+
+
+    @Override
+    public TableBuilder createOrAlter(String name) {
+        RDBSchemaMetadata schema;
+        String tableName = name;
+        // 处理表名 . ,说明是制定schema
+        if (name.contains(".")) {
+            String[] arr = name.split("[.]");
+            tableName = arr[1];
+            schema = metadata
+                    .getSchema(arr[0])
+                    .orElseThrow(() -> new UnsupportedOperationException("schema [" + arr[0] + "] doesn't exist"));
+        } else {
+            schema = metadata.getCurrentSchema();
+        }
+        return new LazyTableBuilder(schema, tableName);
+    }
+
+    @Override
+    public TableBuilder createOrAlter(RDBTableMetadata newTable) {
+        return new DefaultTableBuilder(newTable);
+    }
+
 
     @Override
     public <K> SyncRepository<Record, K> createRepository(String tableName) {
@@ -131,23 +175,4 @@ public class DefaultDatabaseOperator implements DatabaseOperator, DMLOperator, S
         return new RecordReactiveRepository<>(this, tableName);
     }
 
-    @Override
-    public RDBDatabaseMetadata getMetadata() {
-        return metadata;
-    }
-
-    @Override
-    public DMLOperator dml() {
-        return this;
-    }
-
-    @Override
-    public DDLOperator ddl() {
-        return this;
-    }
-
-    @Override
-    public SQLOperator sql() {
-        return this;
-    }
 }
