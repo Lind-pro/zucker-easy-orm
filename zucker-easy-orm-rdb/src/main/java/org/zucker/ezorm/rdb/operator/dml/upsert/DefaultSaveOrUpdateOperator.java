@@ -181,17 +181,18 @@ public class DefaultSaveOrUpdateOperator implements SaveOrUpdateOperator {
                 Upsert upsert = supplier.get();
                 return sqlExecutor
                         .update(Flux.fromIterable(upsert.insert))
-                        .flatMap(inserted ->
-                                Flux.fromIterable(upsert.upserts)
-                                        .flatMap(updateOrInsert ->
-                                                sqlExecutor.update(Mono.just(updateOrInsert.updateSql))
-                                                        .flatMap(updated -> {
-                                                            if (updated == 0) {
-                                                                return sqlExecutor.update(Mono.just(updateOrInsert.insertSql.get()))
-                                                                        .map(r -> SaveResult.of(r, 0));
-                                                            }
-                                                            return Mono.just(SaveResult.of(0, updated));
-                                                        })).reduce(SaveResult.of(inserted, 0), SaveResult::merge))
+                        .flatMap(inserted -> Flux
+                                .fromIterable(upsert.upserts)
+                                .flatMap(updateOrInsert -> sqlExecutor
+                                        .update(Mono.just(updateOrInsert.updateSql))
+                                        .flatMap(updated -> {
+                                            if (updated == 0) {
+                                                return sqlExecutor
+                                                        .update(Mono.just(updateOrInsert.insertSql.get()))
+                                                        .map(r -> SaveResult.of(r, 0));
+                                            }
+                                            return Mono.just(SaveResult.of(0, updated));
+                                        })).reduce(SaveResult.of(inserted, 0), SaveResult::merge))
                         .as(ExceptionUtils.translation(table));
             });
         }
