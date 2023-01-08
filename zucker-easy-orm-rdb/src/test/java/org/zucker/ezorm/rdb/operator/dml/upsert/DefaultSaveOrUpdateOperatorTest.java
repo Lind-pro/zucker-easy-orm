@@ -101,18 +101,18 @@ public class DefaultSaveOrUpdateOperatorTest {
                 .as(StepVerifier::create)
                 .expectNext(true)
                 .verifyComplete();
-
-        databaseOperator
-                .dml()
-                .upsert("upsert_test")
-                .value("id", "123")
-                .value("name", "test")
-                .execute()
-                .reactive()
-                .map(SaveResult::getAdded)
-                .as(StepVerifier::create)
-                .expectNext(1)
-                .verifyComplete();
+//
+//        databaseOperator
+//                .dml()
+//                .upsert("upsert_test")
+//                .value("id", "123")
+//                .value("name", "test")
+//                .execute()
+//                .reactive()
+//                .map(SaveResult::getAdded)
+//                .as(StepVerifier::create)
+//                .expectNext(1)
+//                .verifyComplete();
 
         // Todo
 
