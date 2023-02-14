@@ -254,7 +254,7 @@ public abstract class QueryOperator implements LogicalOperation<QueryOperator> {
 
     public abstract QueryOperator orderBy(SortOrder... operators);
 
-    public abstract QueryOperator groupBy(Operator<?>... operators);
+    public abstract QueryOperator groupBy(Operator<SelectColumn>... operators);
 
     public abstract QueryOperator having(Operator<?>... operators);
 
