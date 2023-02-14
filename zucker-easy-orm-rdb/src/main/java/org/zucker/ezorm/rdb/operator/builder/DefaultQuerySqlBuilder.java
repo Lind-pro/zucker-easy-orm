@@ -2,10 +2,7 @@ package org.zucker.ezorm.rdb.operator.builder;
 
 import lombok.AllArgsConstructor;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
-import org.zucker.ezorm.rdb.metadata.RDBFeatureType;
-import org.zucker.ezorm.rdb.metadata.RDBFeatures;
-import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
-import org.zucker.ezorm.rdb.metadata.TableOrViewMetadata;
+import org.zucker.ezorm.rdb.metadata.*;
 import org.zucker.ezorm.rdb.operator.builder.fragments.BlockSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.PrepareSqlFragments;
 import org.zucker.ezorm.rdb.operator.builder.fragments.SqlFragments;
@@ -19,14 +16,25 @@ import java.util.Optional;
  * @author lind
  * @since 1.0
  */
-@AllArgsConstructor(staticName = "of")
 public class DefaultQuerySqlBuilder implements QuerySqlBuilder {
 
     protected RDBSchemaMetadata schema;
 
+    protected DefaultQuerySqlBuilder(RDBSchemaMetadata schema) {
+        this.schema = schema;
+    }
+
+    public static DefaultQuerySqlBuilder of(RDBSchemaMetadata schema) {
+        return new DefaultQuerySqlBuilder(schema);
+    }
+
     protected Optional<SqlFragments> select(QueryOperatorParameter parameter, TableOrViewMetadata metadata) {
+
         return metadata.getFeature(RDBFeatures.select)
-                .map(builder -> builder.createFragments(parameter))
+                .map(builder -> {
+                    System.out.println(builder.createFragments(parameter));
+                    return builder.createFragments(parameter);
+                })
                 .filter(SqlFragments::isNotEmpty);
     }
 
@@ -48,6 +56,14 @@ public class DefaultQuerySqlBuilder implements QuerySqlBuilder {
                 .filter(SqlFragments::isNotEmpty);
     }
 
+    protected SqlFragments from(TableOrViewMetadata metadata, QueryOperatorParameter parameter) {
+        return PrepareSqlFragments
+                .of()
+                .addSql("from")
+                .addSql(metadata.getFullName())
+                .addSql(parameter.getFormAlias());
+    }
+
     protected SqlRequest build(TableOrViewMetadata metadata, QueryOperatorParameter parameter) {
         BlockSqlFragments fragments = BlockSqlFragments.of();
 
@@ -55,10 +71,7 @@ public class DefaultQuerySqlBuilder implements QuerySqlBuilder {
         fragments.addBlock(FragmentBlock.selectColumn, select(parameter, metadata)
                 .orElseGet(() -> PrepareSqlFragments.of().addSql("*")));
 
-        fragments.addBlock(FragmentBlock.selectFrom, PrepareSqlFragments.of()
-                .addSql("from")
-                .addSql(metadata.getFullName())
-                .addSql(parameter.getFormAlias()));
+        fragments.addBlock(FragmentBlock.selectFrom, from(metadata, parameter));
 
 
         join(parameter, metadata)
