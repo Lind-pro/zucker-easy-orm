@@ -26,7 +26,7 @@ import static org.zucker.ezorm.rdb.operator.dml.query.SortOrder.desc;
 public class BuildParameterQueryOperator extends QueryOperator {
 
     @Getter
-    private QueryOperatorParameter parameter = new QueryOperatorParameter();
+    private final QueryOperatorParameter parameter = new QueryOperatorParameter();
 
     public BuildParameterQueryOperator(String from) {
         parameter.setFrom(from);
@@ -111,7 +111,10 @@ public class BuildParameterQueryOperator extends QueryOperator {
     }
 
     @Override
-    public QueryOperator groupBy(Operator<?>... operators) {
+    public QueryOperator groupBy(Operator<SelectColumn>... operators) {
+        for (Operator<SelectColumn> operator : operators) {
+            parameter.getGroupBy().add(operator.get());
+        }
         return this;
     }
 
