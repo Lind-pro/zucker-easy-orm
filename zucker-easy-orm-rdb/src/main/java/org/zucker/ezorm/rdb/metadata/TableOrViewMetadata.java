@@ -50,7 +50,7 @@ public interface TableOrViewMetadata extends ObjectMetadata, FeatureSupportedMet
     List<RDBColumnMetadata> findColumns();
 
     /**
-     * 获取当前表或者试图对列
+     * 获取当前表或者视图对列
      *
      * @param name 列名或者别名
      * @return
