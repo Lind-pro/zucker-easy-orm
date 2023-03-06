@@ -2,7 +2,10 @@ package org.zucker.ezorm.rdb.operator.builder;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
+import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.metadata.RDBColumnMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBDatabaseMetadata;
 import org.zucker.ezorm.rdb.metadata.RDBSchemaMetadata;
@@ -10,6 +13,8 @@ import org.zucker.ezorm.rdb.metadata.RDBTableMetadata;
 import org.zucker.ezorm.rdb.metadata.dialect.Dialect;
 import org.zucker.ezorm.rdb.metadata.key.ForeignKeyBuilder;
 import org.zucker.ezorm.rdb.operator.dml.JoinType;
+import org.zucker.ezorm.rdb.operator.dml.query.BuildParameterQueryOperator;
+import org.zucker.ezorm.rdb.operator.dml.query.Orders;
 
 import java.sql.JDBCType;
 
@@ -75,4 +80,27 @@ public class DefaultQuerySqlBuilderTest {
     public class User {
         private String id;
     }
+
+    @Test
+    public void testAutoJoin() {
+        BuildParameterQueryOperator query = new BuildParameterQueryOperator("test");
+        query.select("id", "info.comment")
+                .where(dsl -> dsl.is("info.comment", "1234"));
+
+        DefaultQuerySqlBuilder sqlBuilder = DefaultQuerySqlBuilder.of(schema);
+        SqlRequest sqlRequest = sqlBuilder.build(query.getParameter());
+        System.out.println(sqlRequest);
+        String sql = sqlRequest.getSql();
+        System.out.println(sql);
+        Assert.assertTrue(sql.contains("where"));
+        Assert.assertTrue(sql.contains("join"));
+    }
+
+    @Test
+    public void test(){
+        BuildParameterQueryOperator query = new BuildParameterQueryOperator("test");
+        query.select("*")
+                .orderBy(Orders.)
+    }
+
 }
