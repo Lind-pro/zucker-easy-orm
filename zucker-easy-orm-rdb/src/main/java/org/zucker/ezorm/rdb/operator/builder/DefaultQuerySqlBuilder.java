@@ -1,6 +1,5 @@
 package org.zucker.ezorm.rdb.operator.builder;
 
-import lombok.AllArgsConstructor;
 import org.zucker.ezorm.rdb.executor.SqlRequest;
 import org.zucker.ezorm.rdb.metadata.*;
 import org.zucker.ezorm.rdb.operator.builder.fragments.BlockSqlFragments;
@@ -29,12 +28,8 @@ public class DefaultQuerySqlBuilder implements QuerySqlBuilder {
     }
 
     protected Optional<SqlFragments> select(QueryOperatorParameter parameter, TableOrViewMetadata metadata) {
-
         return metadata.getFeature(RDBFeatures.select)
-                .map(builder -> {
-                    System.out.println(builder.createFragments(parameter));
-                    return builder.createFragments(parameter);
-                })
+                .map(builder -> builder.createFragments(parameter))
                 .filter(SqlFragments::isNotEmpty);
     }
 
