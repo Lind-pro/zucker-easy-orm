@@ -18,6 +18,7 @@ import org.zucker.ezorm.rdb.operator.dml.query.Orders;
 
 import java.sql.JDBCType;
 
+
 public class DefaultQuerySqlBuilderTest {
 
     RDBSchemaMetadata schema;
@@ -97,10 +98,20 @@ public class DefaultQuerySqlBuilderTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         BuildParameterQueryOperator query = new BuildParameterQueryOperator("test");
         query.select("*")
-                .orderBy(Orders.)
+                .orderBy(Orders.count("name"), Orders.desc("info.comment"))
+                .paging(0, 10);
+
+        DefaultQuerySqlBuilder sqlBuilder = DefaultQuerySqlBuilder.of(schema);
+        long time = System.currentTimeMillis();
+        SqlRequest sqlRequest = sqlBuilder.build(query.getParameter());
+
+        System.out.println(System.currentTimeMillis() - time);
+        Assert.assertNotNull(sqlRequest);
+        Assert.assertNotNull(sqlRequest.getSql());
+        System.out.println(sqlRequest.toNativeSql());
     }
 
 }
