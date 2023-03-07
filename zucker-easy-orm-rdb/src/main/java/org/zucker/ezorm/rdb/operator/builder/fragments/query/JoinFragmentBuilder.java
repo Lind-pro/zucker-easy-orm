@@ -12,6 +12,8 @@ import org.zucker.ezorm.rdb.operator.dml.query.QueryOperatorParameter;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * @author lind
  * @since 1.0
@@ -24,16 +26,19 @@ public class JoinFragmentBuilder implements QuerySqlFragmentBuilder {
     @Override
     public SqlFragments createFragments(QueryOperatorParameter parameter) {
 
+        // TODO 这里有错误
         PrepareSqlFragments fragments = PrepareSqlFragments.of();
+
         List<Join> joins = parameter.getJoins();
+
         for (Join join : joins) {
             metadata.getSchema()
                     .findTableOrView(join.getTarget())
                     .ifPresent(target -> {
-                        Optional.ofNullable(join.getType())
+                        ofNullable(join.getType())
                                 .map(JoinType::name)
                                 .ifPresent(fragments::addSql);
-                        // join schema.table on
+                        //join schema.table on
                         fragments.addSql("join")
                                 .addSql(target.getFullName())
                                 .addSql(join.getAlias())
@@ -45,7 +50,7 @@ public class JoinFragmentBuilder implements QuerySqlFragmentBuilder {
                                             QueryOperatorParameter joinOnParameter = new QueryOperatorParameter();
                                             joinOnParameter.setFrom(target.getName());
                                             joinOnParameter.setFromAlias(join.getAlias());
-                                            if (join.getTerms() != null) {
+                                            if(join.getTerms()!=null) {
                                                 joinOnParameter.getWhere().addAll(join.getTerms());
                                             }
                                             return builder.createFragments(joinOnParameter);
@@ -54,7 +59,9 @@ public class JoinFragmentBuilder implements QuerySqlFragmentBuilder {
                                         .orElseThrow(() -> new IllegalArgumentException("join terms is empty"))
                         );
                     });
+
         }
+
         return fragments;
     }
 
@@ -65,6 +72,6 @@ public class JoinFragmentBuilder implements QuerySqlFragmentBuilder {
 
     @Override
     public String getName() {
-        return "表链接";
+        return "表连接";
     }
 }
